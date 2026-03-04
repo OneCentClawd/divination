@@ -31,6 +31,14 @@
         "navigationBarBackgroundColor": "#1a1a2e",
         "navigationBarTextStyle": "white"
       }
+    },
+    {
+      "path": "pages/profile/profile",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
     }
   ],
   "globalStyle": {
@@ -63,6 +71,12 @@
         "text": "记录",
         "iconPath": "static/tab-history.png",
         "selectedIconPath": "static/tab-history-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "static/tab-profile.png",
+        "selectedIconPath": "static/tab-profile-active.png"
       }
     ]
   }
