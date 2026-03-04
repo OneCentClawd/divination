@@ -98,9 +98,7 @@ const hourOptions = [
 
 const selectedHourLabel = computed(() => {
   if (userInfo.value.birthHour !== undefined && userInfo.value.birthHour !== null) {
-    const hour = userInfo.value.birthHour
-    const hourIndex = Math.floor(((hour + 1) % 24) / 2)
-    return hourOptions[hourIndex]?.label
+    return hourOptions[userInfo.value.birthHour]?.label
   }
   return ''
 })
@@ -163,8 +161,8 @@ const onBirthDateChange = (e: any) => {
 // 选择出生时辰
 const onBirthHourChange = (e: any) => {
   const index = parseInt(e.detail.value)
-  // 时辰转小时（取中间值）
-  userInfo.value.birthHour = (index * 2 + 23) % 24
+  // 直接存时辰序号 0-11（子丑寅卯辰巳午未申酉戌亥）
+  userInfo.value.birthHour = index
 }
 
 // 选择性别
@@ -179,9 +177,25 @@ const getLocation = async () => {
     userInfo.value.latitude = res.latitude
     userInfo.value.longitude = res.longitude
     
-    // 逆地理编码获取城市（简化处理，实际需要调用 API）
-    userInfo.value.province = '定位中...'
-    userInfo.value.city = ''
+    // 使用微信逆地理编码
+    // @ts-ignore
+    const qqmapsdk = uni.requireNativePlugin ? null : null
+    
+    // 简化处理：调用腾讯地图 API
+    try {
+      const geoRes = await uni.request({
+        url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${res.latitude},${res.longitude}&key=TXNBZ-NJOK3-WXX3V-3JSBP-CHVHN-WBBU6`
+      })
+      if ((geoRes.data as any).status === 0) {
+        const addr = (geoRes.data as any).result.address_component
+        userInfo.value.province = addr.province
+        userInfo.value.city = addr.city
+      }
+    } catch (e) {
+      // 降级处理
+      userInfo.value.province = '已定位'
+      userInfo.value.city = `${res.latitude.toFixed(2)}, ${res.longitude.toFixed(2)}`
+    }
     
     uni.showToast({ title: '定位成功', icon: 'success' })
   } catch (e) {
