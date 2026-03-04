@@ -84,8 +84,10 @@ const getAiInterpretation = async () => {
   aiLoading.value = true
   
   try {
-    // 调用后端 API（大师解卦）
+    // 获取用户信息（如果有）
     const token = uni.getStorageSync('divination_token')
+    const userInfo = uni.getStorageSync('divination_user') || {}
+    
     const res = await uni.request({
       url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/interpret',
       method: 'POST',
@@ -97,7 +99,15 @@ const getAiInterpretation = async () => {
         changeHexagramName: changeHexagram.value?.chineseName,
         hasChange: hasChange.value,
         question: question.value,
-        lines: lines.value
+        lines: lines.value,
+        // 用户信息（可选）
+        userInfo: userInfo.birthYear ? {
+          birthYear: userInfo.birthYear,
+          birthMonth: userInfo.birthMonth,
+          birthDay: userInfo.birthDay,
+          birthHour: userInfo.birthHour,
+          gender: userInfo.gender
+        } : null
       }
     })
     
