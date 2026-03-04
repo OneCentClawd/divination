@@ -189,7 +189,7 @@ const getLocation = async () => {
 const chooseLocationManually = () => {
   uni.chooseLocation({
     success: async (res) => {
-      await handleLocationSuccess(res.latitude, res.longitude, res.name || res.address)
+      await handleLocationSuccess(res.latitude, res.longitude)
     },
     fail: () => {
       uni.showToast({ title: '取消选择', icon: 'none' })
@@ -198,19 +198,11 @@ const chooseLocationManually = () => {
 }
 
 // 处理定位成功
-const handleLocationSuccess = async (lat: number, lng: number, locationName?: string) => {
+const handleLocationSuccess = async (lat: number, lng: number) => {
   userInfo.value.latitude = lat
   userInfo.value.longitude = lng
   
-  if (locationName) {
-    // 从手动选择的地址解析省市
-    userInfo.value.province = '已定位'
-    userInfo.value.city = locationName
-    uni.showToast({ title: '定位成功', icon: 'success' })
-    return
-  }
-  
-  // 调用后端逆地理编码
+  // 调用后端逆地理编码获取真实省市
   try {
     const geoRes = await uni.request({
       url: `https://lonely.centralus.cloudapp.azure.com/api/divination/geocode?lat=${lat}&lng=${lng}`
