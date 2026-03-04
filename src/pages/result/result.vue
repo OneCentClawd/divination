@@ -107,6 +107,7 @@ const changeHexagram = ref<any>(null)
 const hasChange = ref(false)
 const question = ref('')
 const aiInterpretation = ref('')
+const hasSavedToBackend = ref(false)  // 防重复保存
 const aiLoading = ref(false)
 const lines = ref<number[]>([])
 const fromHistory = ref(false)
@@ -194,9 +195,10 @@ const getAiInterpretation = async () => {
       const cacheKey = `divination_ai_${hexagram.value?.binary}_${question.value}`
       uni.setStorageSync(cacheKey, aiInterpretation.value)
       
-      // 保存到后端
-      if (token) {
+      // 保存到后端（只保存一次）
+      if (token && !hasSavedToBackend.value) {
         saveToBackend()
+        hasSavedToBackend.value = true
       }
     } else if (res.statusCode === 401) {
       // 清除过期的 token
