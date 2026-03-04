@@ -78,10 +78,10 @@
         <text class="action-desc">铜钱法占卜</text>
       </view>
       
-      <view class="action-card disabled">
+      <view class="action-card" @click="goToMeihua">
         <text class="action-icon">🌸</text>
         <text class="action-title">梅花易数</text>
-        <text class="action-desc">即将上线</text>
+        <text class="action-desc">数字/时间起卦</text>
       </view>
       
       <view class="action-card disabled">
@@ -163,6 +163,12 @@ const getPersonalFortune = async () => {
 const goToDivine = (method: string) => {
   uni.switchTab({
     url: '/pages/divine/divine'
+  })
+}
+
+const goToMeihua = () => {
+  uni.navigateTo({
+    url: '/pages/meihua/meihua'
   })
 }
 
