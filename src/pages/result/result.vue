@@ -182,8 +182,10 @@ const getAiInterpretation = async () => {
     
     if (res.statusCode === 200 && (res.data as any).interpretation) {
       aiInterpretation.value = (res.data as any).interpretation
+    } else if (res.statusCode === 401) {
+      uni.showToast({ title: (res.data as any).error || '请先登录', icon: 'none' })
     } else {
-      uni.showToast({ title: '解读失败', icon: 'none' })
+      uni.showToast({ title: (res.data as any).error || '解读失败', icon: 'none' })
     }
   } catch (e) {
     console.error('AI解读失败:', e)
