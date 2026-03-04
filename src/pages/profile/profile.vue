@@ -202,16 +202,17 @@ const chooseLocationManually = () => {
   })
 }
 
-// 处理定位成功（自动定位时调用）
+// 处理定位成功
 const handleLocationSuccess = async (lat: number, lng: number) => {
   userInfo.value.latitude = lat
   userInfo.value.longitude = lng
   
-  // 先设置一个默认值
+  // 设置默认显示
   userInfo.value.province = '已定位'
   userInfo.value.city = ''
+  userInfo.value.locationDisplay = `${lat.toFixed(2)}, ${lng.toFixed(2)}`
   
-  // 调用后端逆地理编码获取真实省市
+  // 尝试调用后端逆地理编码
   try {
     const geoRes = await uni.request({
       url: `https://lonely.centralus.cloudapp.azure.com/api/divination/geocode?lat=${lat}&lng=${lng}`,
@@ -222,14 +223,12 @@ const handleLocationSuccess = async (lat: number, lng: number) => {
       const city = (geoRes.data as any).city || ''
       userInfo.value.province = province || '已定位'
       userInfo.value.city = city
-      // 更新显示文本
       if (province || city) {
         userInfo.value.locationDisplay = [province, city].filter(Boolean).join(' ')
       }
     }
   } catch (e) {
     console.error('逆地理编码失败:', e)
-    // 保持默认值
   }
   
   uni.showToast({ title: '定位成功', icon: 'success' })
