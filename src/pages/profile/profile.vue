@@ -196,11 +196,39 @@ const getLocation = async () => {
         
         uni.showToast({ title: '定位成功', icon: 'success' })
       },
-      fail: () => {
-        uni.showToast({ title: '定位失败', icon: 'none' })
+      fail: (err: any) => {
+        console.error('定位失败:', err)
+        // 如果是模糊定位不可用，尝试普通定位
+        uni.getLocation({
+          type: 'gcj02',
+          success: async (res) => {
+            userInfo.value.latitude = res.latitude
+            userInfo.value.longitude = res.longitude
+            
+            try {
+              const geoRes = await uni.request({
+                url: `https://lonely.centralus.cloudapp.azure.com/api/divination/geocode?lat=${res.latitude}&lng=${res.longitude}`
+              })
+              if ((geoRes.data as any).success) {
+                userInfo.value.province = (geoRes.data as any).province
+                userInfo.value.city = (geoRes.data as any).city
+              }
+            } catch (e) {
+              userInfo.value.province = '已定位'
+              userInfo.value.city = ''
+            }
+            
+            uni.showToast({ title: '定位成功', icon: 'success' })
+          },
+          fail: (err2) => {
+            console.error('普通定位也失败:', err2)
+            uni.showToast({ title: '请在设置中开启位置权限', icon: 'none' })
+          }
+        })
       }
     })
   } catch (e) {
+    console.error('定位异常:', e)
     uni.showToast({ title: '定位失败', icon: 'none' })
   }
 }
