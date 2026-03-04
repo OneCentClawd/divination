@@ -57,10 +57,7 @@
     </view>
     
     <!-- 底部按钮 -->
-    <view class="bottom-actions">
-      <button class="save-btn" @click="saveToHistory" v-if="!fromHistory">保存到历史记录</button>
-      <button class="again-btn" @click="divineAgain">再起一卦</button>
-    </view>
+    <button class="save-btn" @click="saveToHistory" v-if="!fromHistory">保存到历史记录</button>
   </view>
 </template>
 
@@ -134,11 +131,6 @@ const saveToHistory = () => {
   if (history.length > 50) history.pop()
   uni.setStorageSync('divination_history', history)
   uni.showToast({ title: '已保存', icon: 'success' })
-}
-
-// 再起一卦
-const divineAgain = () => {
-  uni.redirectTo({ url: '/pages/divine/divine' })
 }
 
 onMounted(() => {
@@ -351,13 +343,6 @@ onMounted(() => {
   color: #a0a0a0;
 }
 
-.bottom-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-  margin-top: 20rpx;
-}
-
 .save-btn {
   background: rgba(212, 175, 55, 0.2);
   color: #d4af37;
@@ -365,14 +350,6 @@ onMounted(() => {
   padding: 24rpx;
   border-radius: 50rpx;
   border: 1rpx solid rgba(212, 175, 55, 0.3);
-}
-
-.again-btn {
-  background: transparent;
-  color: #888888;
-  font-size: 28rpx;
-  padding: 24rpx;
-  border-radius: 50rpx;
-  border: 1rpx solid rgba(136, 136, 136, 0.3);
+  margin-top: 20rpx;
 }
 </style>

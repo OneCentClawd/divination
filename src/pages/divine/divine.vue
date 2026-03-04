@@ -85,7 +85,10 @@
     <view class="complete-stage" v-if="stage === 'complete'">
       <text class="complete-icon">✨</text>
       <text class="complete-text">卦象已成</text>
-      <button class="view-result-btn" @click="viewResult">查看卦象解读</button>
+      <view class="complete-actions">
+        <button class="action-btn primary" @click="viewResult">查看卦象解读</button>
+        <button class="action-btn secondary" @click="divineAgain">再起一卦</button>
+      </view>
     </view>
   </view>
 </template>
@@ -264,6 +267,24 @@ const viewResult = () => {
   uni.navigateTo({
     url: `/pages/result/result?binary=${binary}&changeBinary=${changeBinary}&hasChange=${hasChange}&question=${encodeURIComponent(question.value)}&lines=${lines.join(',')}`
   })
+}
+
+// 再起一卦
+const divineAgain = () => {
+  // 重置状态
+  stage.value = 'question'
+  question.value = ''
+  currentYao.value = 1
+  canStart.value = false
+  yaoResults.value = [
+    { type: '', value: 0 },
+    { type: '', value: 0 },
+    { type: '', value: 0 },
+    { type: '', value: 0 },
+    { type: '', value: 0 },
+    { type: '', value: 0 }
+  ]
+  divineHint.value = '点击下方按钮摇卦'
 }
 </script>
 
@@ -591,13 +612,31 @@ const viewResult = () => {
   margin-bottom: 60rpx;
 }
 
-.view-result-btn {
-  background: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%);
-  color: #1a1a2e;
+.complete-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  width: 100%;
+  padding: 0 60rpx;
+}
+
+.action-btn {
   font-size: 32rpx;
   font-weight: bold;
-  padding: 24rpx 80rpx;
+  padding: 28rpx;
   border-radius: 50rpx;
   border: none;
+  width: 100%;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%);
+  color: #1a1a2e;
+}
+
+.action-btn.secondary {
+  background: rgba(212, 175, 55, 0.15);
+  color: #d4af37;
+  border: 1rpx solid rgba(212, 175, 55, 0.3);
 }
 </style>
