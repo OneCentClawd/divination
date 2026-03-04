@@ -187,18 +187,8 @@ const chooseLocationManually = () => {
       userInfo.value.latitude = res.latitude
       userInfo.value.longitude = res.longitude
       
-      // 用于显示的地址文本（优先 name，其次 address）
-      let displayText = ''
-      if (res.name) {
-        displayText = res.name
-        if (res.address) {
-          displayText += ` (${res.address})`
-        }
-      } else if (res.address) {
-        displayText = res.address
-      } else {
-        displayText = `${res.latitude.toFixed(4)}, ${res.longitude.toFixed(4)}`
-      }
+      // 用于显示的地址文本（只显示地点名，简短）
+      const displayText = res.name || res.address || '已定位'
       userInfo.value.locationDisplay = displayText
       
       // 调后端获取真实省市（用于运势计算，不等待）
