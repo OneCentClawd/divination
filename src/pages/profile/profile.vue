@@ -76,7 +76,6 @@
 import { ref, computed, onMounted } from 'vue'
 
 const isLoggedIn = ref(false)
-const openid = ref('')
 const userInfo = ref<any>({})
 
 const birthDate = ref('')
@@ -128,12 +127,12 @@ const handleLogin = async () => {
     })
     
     if ((res.data as any).success) {
-      openid.value = (res.data as any).openid
+      const token = (res.data as any).token
       userInfo.value = (res.data as any).user
       isLoggedIn.value = true
       
-      // 保存到本地
-      uni.setStorageSync('divination_openid', openid.value)
+      // 保存 token 和用户信息
+      uni.setStorageSync('divination_token', token)
       uni.setStorageSync('divination_user', userInfo.value)
       
       // 更新生日显示
@@ -209,10 +208,11 @@ const getLocation = async () => {
 // 保存资料
 const saveProfile = async () => {
   try {
+    const token = uni.getStorageSync('divination_token')
     const res = await uni.request({
       url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/user/profile',
       method: 'POST',
-      header: { 'X-Openid': openid.value },
+      header: { 'Authorization': `Bearer ${token}` },
       data: userInfo.value
     })
     
@@ -229,11 +229,10 @@ const saveProfile = async () => {
 
 // 检查登录状态
 onMounted(() => {
-  const savedOpenid = uni.getStorageSync('divination_openid')
+  const savedToken = uni.getStorageSync('divination_token')
   const savedUser = uni.getStorageSync('divination_user')
   
-  if (savedOpenid) {
-    openid.value = savedOpenid
+  if (savedToken) {
     userInfo.value = savedUser || {}
     isLoggedIn.value = true
     
