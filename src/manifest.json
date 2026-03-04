@@ -34,7 +34,13 @@
         "setting" : {
             "urlCheck" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "requiredPrivateInfos": ["getFuzzyLocation"],
+        "permission": {
+            "scope.userFuzzyLocation": {
+                "desc": "用于计算您的吉祥方位"
+            }
+        }
     },
     "uniStatistics": {  
         "enable": false

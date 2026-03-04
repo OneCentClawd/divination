@@ -170,29 +170,37 @@ const onGenderChange = (e: any) => {
   userInfo.value.gender = parseInt(e.detail.value)
 }
 
-// 获取定位
+// 获取定位（使用模糊定位，无需用户授权）
 const getLocation = async () => {
   try {
-    const res = await uni.getLocation({ type: 'gcj02' })
-    userInfo.value.latitude = res.latitude
-    userInfo.value.longitude = res.longitude
-    
-    // 调用后端逆地理编码
-    try {
-      const geoRes = await uni.request({
-        url: `https://lonely.centralus.cloudapp.azure.com/api/divination/geocode?lat=${res.latitude}&lng=${res.longitude}`
-      })
-      if ((geoRes.data as any).success) {
-        userInfo.value.province = (geoRes.data as any).province
-        userInfo.value.city = (geoRes.data as any).city
+    // 使用 wx.getFuzzyLocation 获取模糊定位
+    // @ts-ignore
+    wx.getFuzzyLocation({
+      type: 'gcj02',
+      success: async (res: any) => {
+        userInfo.value.latitude = res.latitude
+        userInfo.value.longitude = res.longitude
+        
+        // 调用后端逆地理编码
+        try {
+          const geoRes = await uni.request({
+            url: `https://lonely.centralus.cloudapp.azure.com/api/divination/geocode?lat=${res.latitude}&lng=${res.longitude}`
+          })
+          if ((geoRes.data as any).success) {
+            userInfo.value.province = (geoRes.data as any).province
+            userInfo.value.city = (geoRes.data as any).city
+          }
+        } catch (e) {
+          userInfo.value.province = '已定位'
+          userInfo.value.city = ''
+        }
+        
+        uni.showToast({ title: '定位成功', icon: 'success' })
+      },
+      fail: () => {
+        uni.showToast({ title: '定位失败', icon: 'none' })
       }
-    } catch (e) {
-      // 降级处理
-      userInfo.value.province = '已定位'
-      userInfo.value.city = ''
-    }
-    
-    uni.showToast({ title: '定位成功', icon: 'success' })
+    })
   } catch (e) {
     uni.showToast({ title: '定位失败', icon: 'none' })
   }
