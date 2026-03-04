@@ -215,7 +215,7 @@ const viewInterpretation = () => {
   if (!result.value) return
   
   uni.navigateTo({
-    url: `/pages/result/result?binary=${result.value.hexagramBinary}&changeBinary=${result.value.changedBinary}&hasChange=true&question=${encodeURIComponent(question.value)}&meihua=true&tiGua=${result.value.tiGua}&yongGua=${result.value.yongGua}&tiElement=${result.value.tiElement}&yongElement=${result.value.yongElement}&relation=${encodeURIComponent(result.value.relation)}`
+    url: `/pages/result/result?binary=${result.value.hexagramBinary}&changeBinary=${result.value.changedBinary}&huGuaBinary=${result.value.huGuaBinary}&hasChange=true&question=${encodeURIComponent(question.value)}&meihua=true&tiGua=${result.value.tiGua}&yongGua=${result.value.yongGua}&tiElement=${result.value.tiElement}&yongElement=${result.value.yongElement}&relation=${encodeURIComponent(result.value.relation)}`
   })
 }
 

@@ -24,6 +24,14 @@
           <text class="gua-element">{{ tiGua === 'lower' ? tiElement : yongElement }}</text>
         </view>
       </view>
+      
+      <!-- 互卦 -->
+      <view class="hugua-section" v-if="huGua">
+        <text class="hugua-label">互卦</text>
+        <text class="hugua-name">{{ huGua?.chineseName }}</text>
+        <text class="hugua-hint">（辅助判断事情发展过程）</text>
+      </view>
+      
       <view class="meihua-hint">
         <text class="hint-text">{{ getRelationHint(relation) }}</text>
       </view>
@@ -110,6 +118,7 @@ const yongGua = ref<'upper' | 'lower'>('lower')
 const tiElement = ref('')
 const yongElement = ref('')
 const relation = ref('')
+const huGua = ref<any>(null)  // 互卦
 
 // 根据二进制找卦象
 const findHexagram = (binary: string) => {
@@ -242,6 +251,10 @@ onMounted(() => {
     tiElement.value = options.tiElement || ''
     yongElement.value = options.yongElement || ''
     relation.value = decodeURIComponent(options.relation || '')
+    // 互卦
+    if (options.huGuaBinary) {
+      huGua.value = findHexagram(options.huGuaBinary)
+    }
   }
   
   hexagram.value = findHexagram(binary)
@@ -323,6 +336,32 @@ onMounted(() => {
 .relation-text {
   font-size: 28rpx;
   color: #d4af37;
+}
+
+.hugua-section {
+  text-align: center;
+  margin: 20rpx 0;
+  padding: 16rpx;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12rpx;
+}
+
+.hugua-label {
+  font-size: 24rpx;
+  color: #888888;
+  margin-right: 12rpx;
+}
+
+.hugua-name {
+  font-size: 28rpx;
+  color: #d4af37;
+  font-weight: bold;
+}
+
+.hugua-hint {
+  font-size: 22rpx;
+  color: #666666;
+  margin-left: 8rpx;
 }
 
 .meihua-hint {

@@ -30,6 +30,7 @@ export interface MeihuaResult {
   lowerSymbol: string       // 下卦符号
   hexagramBinary: string    // 六爻二进制
   changedBinary: string     // 变卦二进制
+  huGuaBinary: string       // 互卦二进制
   tiGua: 'upper' | 'lower'  // 体卦
   yongGua: 'upper' | 'lower' // 用卦
   tiElement: string         // 体卦五行
@@ -101,12 +102,18 @@ function buildResult(upperTrigram: number, lowerTrigram: number, changingLine: n
   const lowerSymbol = TRIGRAM_SYMBOLS[lowerTrigram]
   
   // 构建六爻二进制（下卦在前，上卦在后）
+  // 索引: 0=初爻, 1=二爻, 2=三爻, 3=四爻, 4=五爻, 5=上爻
   const hexagramBinary = TRIGRAM_BINARY[lowerTrigram] + TRIGRAM_BINARY[upperTrigram]
   
   // 动爻变化后的二进制
   const binaryArray = hexagramBinary.split('')
   binaryArray[changingLine - 1] = binaryArray[changingLine - 1] === '0' ? '1' : '0'
   const changedBinary = binaryArray.join('')
+  
+  // 互卦：取2345爻（索引1234）
+  // 互卦下卦 = 原卦234爻（索引123）
+  // 互卦上卦 = 原卦345爻（索引234）
+  const huGuaBinary = hexagramBinary.substring(1, 4) + hexagramBinary.substring(2, 5)
   
   // 确定体用卦
   // 动爻在下卦（1-3爻）→ 下卦为用，上卦为体
@@ -131,6 +138,7 @@ function buildResult(upperTrigram: number, lowerTrigram: number, changingLine: n
     lowerSymbol,
     hexagramBinary,
     changedBinary,
+    huGuaBinary,
     tiGua,
     yongGua,
     tiElement,
