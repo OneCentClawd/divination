@@ -125,12 +125,20 @@ const handleLogin = async () => {
   try {
     const loginRes = await uni.login({ provider: 'weixin' })
     const code = loginRes.code
+    console.log('wx login code:', code)
+    
+    if (!code) {
+      uni.showToast({ title: '获取登录凭证失败', icon: 'none' })
+      return
+    }
     
     const res = await uni.request({
       url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/user/login',
       method: 'POST',
       data: { code }
     })
+    
+    console.log('login response:', res.data)
     
     if ((res.data as any).success) {
       const token = (res.data as any).token
