@@ -167,7 +167,7 @@ const shakeCoin = () => {
       face: Math.random() > 0.5 ? 'yang' : 'yin'
     }))
     flipCount++
-    if (flipCount > 10) {
+    if (flipCount > 8) {
       clearInterval(flipInterval)
       
       // 计算结果：3个铜钱的正反面
@@ -208,7 +208,7 @@ const shakeCoin = () => {
         }, 1500)
       }
     }
-  }, 100)
+  }, 150)
 }
 
 const getYaoName = (type: YaoType): string => {
