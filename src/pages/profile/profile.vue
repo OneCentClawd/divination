@@ -190,7 +190,24 @@ const getLocation = async () => {
 const chooseLocationManually = () => {
   uni.chooseLocation({
     success: async (res) => {
-      await handleLocationSuccess(res.latitude, res.longitude)
+      // chooseLocation 返回的 res 有 name/address
+      userInfo.value.latitude = res.latitude
+      userInfo.value.longitude = res.longitude
+      
+      // 直接使用返回的地址信息
+      if (res.address) {
+        userInfo.value.province = res.address
+        userInfo.value.city = res.name || ''
+      } else if (res.name) {
+        userInfo.value.province = res.name
+        userInfo.value.city = ''
+      } else {
+        // 没有地址信息才调后端
+        await handleLocationSuccess(res.latitude, res.longitude)
+        return
+      }
+      
+      uni.showToast({ title: '定位成功', icon: 'success' })
     },
     fail: () => {
       uni.showToast({ title: '取消选择', icon: 'none' })
