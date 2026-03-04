@@ -265,11 +265,6 @@ const viewResult = () => {
     url: `/pages/result/result?binary=${binary}&changeBinary=${changeBinary}&hasChange=${hasChange}&question=${encodeURIComponent(question.value)}&lines=${lines.join(',')}`
   })
 }
-
-// 页面加载时开始呼吸引导
-setTimeout(() => {
-  startBreathing()
-}, 500)
 </script>
 
 <style scoped>
