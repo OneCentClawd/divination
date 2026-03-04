@@ -39,7 +39,7 @@
     <!-- AI 解读 -->
     <view class="ai-section">
       <view class="ai-header">
-        <text class="ai-title">🐕 小狗解卦</text>
+        <text class="ai-title">🔮 大師解卦</text>
         <text class="ai-badge" v-if="!aiInterpretation">高级功能</text>
       </view>
       
@@ -48,11 +48,11 @@
       </view>
       
       <button class="ai-btn" @click="getAiInterpretation" v-if="!aiInterpretation && !aiLoading">
-        请小狗解卦
+        請大師解卦
       </button>
       
       <view class="ai-loading" v-if="aiLoading">
-        <text class="loading-text">小狗正在解读卦象...</text>
+        <text class="loading-text">大師正在解讀卦象...</text>
       </view>
     </view>
     
