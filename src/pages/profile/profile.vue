@@ -257,6 +257,25 @@ const saveProfile = async () => {
   }
 }
 
+// 自动尝试模糊定位（用户没有位置信息时）
+const tryAutoLocation = () => {
+  // @ts-ignore
+  wx.getFuzzyLocation({
+    type: 'gcj02',
+    success: async (res: any) => {
+      userInfo.value.latitude = res.latitude
+      userInfo.value.longitude = res.longitude
+      userInfo.value.locationDisplay = '定位中...'
+      
+      // 调后端获取真实省市
+      await handleLocationSuccess(res.latitude, res.longitude)
+    },
+    fail: () => {
+      // 自动定位失败，不做处理，用户可以手动选择
+    }
+  })
+}
+
 // 检查登录状态
 onMounted(() => {
   const savedToken = uni.getStorageSync('divination_token')
@@ -268,6 +287,11 @@ onMounted(() => {
     
     if (userInfo.value.birthYear) {
       birthDate.value = `${userInfo.value.birthYear}-${String(userInfo.value.birthMonth).padStart(2, '0')}-${String(userInfo.value.birthDay).padStart(2, '0')}`
+    }
+    
+    // 如果没有位置信息，尝试自动定位
+    if (!userInfo.value.latitude && !userInfo.value.locationDisplay) {
+      tryAutoLocation()
     }
   }
 })
