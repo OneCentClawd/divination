@@ -257,21 +257,64 @@ const saveProfile = async () => {
   }
 }
 
-// 自动尝试模糊定位（用户没有位置信息时）
+// 计算两点距离（公里）
+const calcDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
+  const R = 6371 // 地球半径（公里）
+  const dLat = (lat2 - lat1) * Math.PI / 180
+  const dLng = (lng2 - lng1) * Math.PI / 180
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLng/2) * Math.sin(dLng/2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+  return R * c
+}
+
+// 是否已经询问过位置更新
+const hasAskedLocationUpdate = ref(false)
+
+// 自动尝试模糊定位
 const tryAutoLocation = () => {
   // @ts-ignore
   wx.getFuzzyLocation({
     type: 'gcj02',
     success: async (res: any) => {
-      userInfo.value.latitude = res.latitude
-      userInfo.value.longitude = res.longitude
-      userInfo.value.locationDisplay = '定位中...'
+      const newLat = res.latitude
+      const newLng = res.longitude
+      const oldLat = userInfo.value.latitude
+      const oldLng = userInfo.value.longitude
       
-      // 调后端获取真实省市
-      await handleLocationSuccess(res.latitude, res.longitude)
+      // 情况1：用户没有位置信息，直接覆盖
+      if (!oldLat || !oldLng) {
+        userInfo.value.latitude = newLat
+        userInfo.value.longitude = newLng
+        await handleLocationSuccess(newLat, newLng)
+        return
+      }
+      
+      // 情况2：用户有位置信息，检查距离差异
+      const distance = calcDistance(oldLat, oldLng, newLat, newLng)
+      
+      // 距离超过 50 公里认为是"很远"
+      if (distance > 50 && !hasAskedLocationUpdate.value) {
+        hasAskedLocationUpdate.value = true
+        uni.showModal({
+          title: '位置变化',
+          content: `检测到您当前位置距离上次相差约 ${Math.round(distance)} 公里，是否更新？`,
+          confirmText: '更新位置',
+          cancelText: '保持原位置',
+          success: async (modalRes) => {
+            if (modalRes.confirm) {
+              userInfo.value.latitude = newLat
+              userInfo.value.longitude = newLng
+              await handleLocationSuccess(newLat, newLng)
+              uni.showToast({ title: '位置已更新', icon: 'success' })
+            }
+          }
+        })
+      }
     },
     fail: () => {
-      // 自动定位失败，不做处理，用户可以手动选择
+      // 自动定位失败，不做处理
     }
   })
 }
@@ -289,10 +332,8 @@ onMounted(() => {
       birthDate.value = `${userInfo.value.birthYear}-${String(userInfo.value.birthMonth).padStart(2, '0')}-${String(userInfo.value.birthDay).padStart(2, '0')}`
     }
     
-    // 如果没有位置信息，尝试自动定位
-    if (!userInfo.value.latitude && !userInfo.value.locationDisplay) {
-      tryAutoLocation()
-    }
+    // 尝试自动定位
+    tryAutoLocation()
   }
 })
 </script>
