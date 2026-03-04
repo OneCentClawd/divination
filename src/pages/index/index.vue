@@ -95,6 +95,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 import hexagramsData from '@/data/hexagrams.json'
 // @ts-ignore
 import { Solar } from 'lunar-javascript'
@@ -173,6 +174,10 @@ const goToProfile = () => {
 
 onMounted(() => {
   getDailyHexagram()
+})
+
+// 每次页面显示时刷新运势（用户保存资料后会触发）
+onShow(() => {
   getPersonalFortune()
 })
 </script>
