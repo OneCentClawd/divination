@@ -5,7 +5,11 @@
       <text class="subtitle">最近的占卜记录</text>
     </view>
     
-    <view class="empty" v-if="history.length === 0">
+    <view class="loading" v-if="loading">
+      <text class="loading-text">加载中...</text>
+    </view>
+    
+    <view class="empty" v-else-if="history.length === 0">
       <text class="empty-icon">📜</text>
       <text class="empty-text">暂无记录</text>
       <text class="empty-hint">去起一卦吧~</text>
@@ -57,12 +61,84 @@ interface HistoryItem {
   hasChange: boolean
   question: string
   aiInterpretation: string
+  // 后端字段
+  hexagramBinary?: string
+  hexagramName?: string
+  changeBinary?: string
+  changeHexagramName?: string
+  createdAt?: string
+  isMeihua?: boolean
+  tiGua?: string
+  tiElement?: string
+  yongElement?: string
+  relation?: string
 }
 
 const history = ref<HistoryItem[]>([])
+const loading = ref(false)
 
-const loadHistory = () => {
-  history.value = uni.getStorageSync('divination_history') || []
+// 从后端加载历史记录
+const loadHistory = async () => {
+  const token = uni.getStorageSync('divination_token')
+  
+  // 未登录时显示本地记录
+  if (!token) {
+    history.value = uni.getStorageSync('divination_history') || []
+    return
+  }
+  
+  loading.value = true
+  try {
+    const res = await uni.request({
+      url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/user/records',
+      method: 'GET',
+      header: { 'Authorization': `Bearer ${token}` }
+    })
+    
+    if (res.statusCode === 200 && (res.data as any).success) {
+      // 转换后端数据格式
+      history.value = (res.data as any).records.map((r: any) => ({
+        id: r.id,
+        date: r.createdAt,
+        hexagram: { 
+          binary: r.hexagramBinary, 
+          chineseName: r.hexagramName,
+          symbol: getSymbolByName(r.hexagramName)
+        },
+        changeHexagram: r.changeBinary ? {
+          binary: r.changeBinary,
+          chineseName: r.changeHexagramName
+        } : null,
+        hasChange: r.hasChange,
+        question: r.question,
+        aiInterpretation: r.aiInterpretation,
+        isMeihua: r.isMeihua,
+        tiGua: r.tiGua,
+        tiElement: r.tiElement,
+        yongElement: r.yongElement,
+        relation: r.relation
+      }))
+    } else if (res.statusCode === 401) {
+      // token 过期，显示本地记录
+      history.value = uni.getStorageSync('divination_history') || []
+    }
+  } catch (e) {
+    console.error('加载历史失败:', e)
+    // 网络错误时显示本地记录
+    history.value = uni.getStorageSync('divination_history') || []
+  } finally {
+    loading.value = false
+  }
+}
+
+// 根据卦名获取符号
+const getSymbolByName = (name: string): string => {
+  const symbols: Record<string, string> = {
+    '乾': '☰', '坤': '☷', '屯': '☳', '蒙': '☶', '需': '☵', '讼': '☰',
+    '师': '☷', '比': '☵', '小畜': '☴', '履': '☱', '泰': '☷', '否': '☰',
+    // 简化版，实际应该用完整映射或从 hexagrams.json 查
+  }
+  return symbols[name] || '☰'
 }
 
 const formatDate = (dateStr: string) => {
@@ -107,6 +183,16 @@ onShow(() => {
   min-height: 100vh;
   background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%);
   padding: 30rpx;
+}
+
+.loading {
+  text-align: center;
+  padding: 100rpx 0;
+}
+
+.loading-text {
+  color: #888888;
+  font-size: 28rpx;
 }
 
 .header {
