@@ -1,5 +1,27 @@
 <template>
   <view class="container">
+    <!-- 输入问题阶段 -->
+    <view class="question-stage" v-if="stage === 'question'">
+      <view class="question-content">
+        <text class="question-icon">❓</text>
+        <text class="question-title">心中所问</text>
+        <text class="question-subtitle">请输入您想占卜的问题</text>
+        
+        <textarea 
+          class="question-textarea" 
+          v-model="question" 
+          placeholder="例如：今日事业运势如何..."
+          maxlength="100"
+        />
+        
+        <button class="next-btn" @click="goToRitual">
+          下一步
+        </button>
+        
+        <text class="skip-text" @click="goToRitual">跳过，直接起卦</text>
+      </view>
+    </view>
+    
     <!-- 仪式引导阶段 -->
     <view class="ritual-stage" v-if="stage === 'ritual'">
       <view class="ritual-content">
@@ -11,16 +33,6 @@
         <view class="breath-circle" :class="{ breathing: isBreathing }"></view>
         
         <text class="breath-hint">{{ breathHint }}</text>
-        
-        <view class="question-input" v-if="showQuestion">
-          <text class="question-label">心中所问（可选）</text>
-          <textarea 
-            class="question-textarea" 
-            v-model="question" 
-            placeholder="在心中默念您的问题..."
-            maxlength="100"
-          />
-        </view>
         
         <button class="start-btn" @click="startDivine" v-if="canStart">
           开始起卦
@@ -81,7 +93,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-type Stage = 'ritual' | 'divine' | 'complete'
+type Stage = 'question' | 'ritual' | 'divine' | 'complete'
 type YaoType = 'yang' | 'yin' | 'yang-change' | 'yin-change' | ''
 
 interface YaoResult {
@@ -93,11 +105,10 @@ interface CoinState {
   face: 'yang' | 'yin'
 }
 
-const stage = ref<Stage>('ritual')
+const stage = ref<Stage>('question')
 const question = ref('')
 const isBreathing = ref(false)
 const breathHint = ref('准备开始...')
-const showQuestion = ref(false)
 const canStart = ref(false)
 
 const currentYao = ref(1)
@@ -115,6 +126,12 @@ const coins = ref<CoinState[]>([
   { face: 'yang' }
 ])
 const isFlipping = ref(false)
+
+// 进入呼吸引导
+const goToRitual = () => {
+  stage.value = 'ritual'
+  startBreathing()
+}
 const divineHint = ref('点击下方按钮摇卦')
 
 // 呼吸引导
@@ -133,7 +150,6 @@ const startBreathing = () => {
           } else {
             breathHint.value = '心神已定'
             isBreathing.value = false
-            showQuestion.value = true
             setTimeout(() => {
               canStart.value = true
             }, 500)
@@ -264,6 +280,72 @@ setTimeout(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* 问题输入阶段 */
+.question-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.question-content {
+  text-align: center;
+  width: 100%;
+  padding: 0 40rpx;
+}
+
+.question-icon {
+  font-size: 80rpx;
+  display: block;
+  margin-bottom: 30rpx;
+}
+
+.question-title {
+  font-size: 40rpx;
+  color: #d4af37;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.question-subtitle {
+  font-size: 28rpx;
+  color: #a0a0a0;
+  display: block;
+  margin-bottom: 40rpx;
+}
+
+.question-textarea {
+  width: 100%;
+  height: 200rpx;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1rpx solid rgba(212, 175, 55, 0.3);
+  border-radius: 16rpx;
+  padding: 24rpx;
+  color: #ffffff;
+  font-size: 28rpx;
+  margin-bottom: 40rpx;
+}
+
+.next-btn {
+  background: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%);
+  color: #1a1a2e;
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 24rpx 80rpx;
+  border-radius: 50rpx;
+  border: none;
+}
+
+.skip-text {
+  font-size: 26rpx;
+  color: #888888;
+  display: block;
+  margin-top: 24rpx;
 }
 
 /* 仪式引导阶段 */
