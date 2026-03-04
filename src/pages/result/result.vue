@@ -84,10 +84,12 @@ const getAiInterpretation = async () => {
   aiLoading.value = true
   
   try {
-    // 调用后端 API（小狗解卦）
+    // 调用后端 API（大师解卦）
+    const token = uni.getStorageSync('divination_token')
     const res = await uni.request({
       url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/interpret',
       method: 'POST',
+      header: token ? { 'Authorization': `Bearer ${token}` } : {},
       data: {
         hexagramName: hexagram.value?.chineseName,
         hexagramJudgment: hexagram.value?.judgment,
