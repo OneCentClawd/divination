@@ -35,7 +35,7 @@
             "urlCheck" : false
         },
         "usingComponents" : true,
-        "requiredPrivateInfos": ["getFuzzyLocation", "getLocation"],
+        "requiredPrivateInfos": ["getFuzzyLocation", "chooseLocation"],
         "permission": {
             "scope.userFuzzyLocation": {
                 "desc": "用于计算您的吉祥方位"
