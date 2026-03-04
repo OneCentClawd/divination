@@ -175,20 +175,9 @@ const onGenderChange = (e: any) => {
   userInfo.value.gender = parseInt(e.detail.value)
 }
 
-// 获取定位（使用模糊定位，无需用户授权）
-const getLocation = async () => {
-  // 先尝试自动定位
-  // @ts-ignore
-  wx.getFuzzyLocation({
-    type: 'gcj02',
-    success: async (res: any) => {
-      await handleLocationSuccess(res.latitude, res.longitude)
-    },
-    fail: () => {
-      // 自动定位失败，让用户手动选择
-      chooseLocationManually()
-    }
-  })
+// 获取定位 - 直接让用户选择位置
+const getLocation = () => {
+  chooseLocationManually()
 }
 
 // 手动选择位置
