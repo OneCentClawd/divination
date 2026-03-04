@@ -315,7 +315,7 @@ const viewResult = () => {
 }
 
 .question-textarea {
-  width: 100%;
+  width: 90%;
   height: 200rpx;
   background: rgba(255, 255, 255, 0.05);
   border: 1rpx solid rgba(212, 175, 55, 0.3);
@@ -323,7 +323,8 @@ const viewResult = () => {
   padding: 24rpx;
   color: #ffffff;
   font-size: 28rpx;
-  margin-bottom: 40rpx;
+  margin: 0 auto 40rpx;
+  box-sizing: border-box;
 }
 
 .next-btn {
