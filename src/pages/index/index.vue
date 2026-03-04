@@ -3,8 +3,11 @@
     <!-- 今日运势卡片 -->
     <view class="fortune-card">
       <view class="fortune-header">
-        <text class="fortune-date">{{ todayDate }}</text>
-        <text class="fortune-title">今日运势</text>
+        <view class="date-info">
+          <text class="fortune-date-gregorian">{{ todayDate.gregorian }}</text>
+          <text class="fortune-date-lunar">{{ todayDate.lunar }}</text>
+        </view>
+        <text class="fortune-title">今日運勢</text>
       </view>
       
       <view class="fortune-hexagram" v-if="dailyHexagram">
@@ -67,7 +70,12 @@ const todayDate = computed(() => {
   const branchIndex = (year - 4) % 12
   const ganZhiYear = heavenlyStems[stemIndex] + earthlyBranches[branchIndex] + '年'
   
-  return `${ganZhiYear} ${chineseMonths[now.getMonth()]}月${chineseDays[now.getDate() - 1]}`
+  // 公历
+  const gregorian = `${year}年${now.getMonth() + 1}月${now.getDate()}日`
+  // 农历（简化显示，用天干地支年份 + 月日）
+  const lunar = `${ganZhiYear} ${chineseMonths[now.getMonth()]}月${chineseDays[now.getDate() - 1]}`
+  
+  return { gregorian, lunar }
 })
 
 // 根据日期生成每日卦象
@@ -108,8 +116,25 @@ onMounted(() => {
 .fortune-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 30rpx;
+}
+
+.date-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.fortune-date-gregorian {
+  color: #888888;
+  font-size: 24rpx;
+}
+
+.fortune-date-lunar {
+  color: #d4af37;
+  font-size: 28rpx;
+  font-weight: bold;
 }
 
 .fortune-date {
