@@ -183,6 +183,10 @@ const getAiInterpretation = async () => {
     if (res.statusCode === 200 && (res.data as any).interpretation) {
       aiInterpretation.value = (res.data as any).interpretation
     } else if (res.statusCode === 401) {
+      // 清除过期的 token
+      uni.removeStorageSync('divination_token')
+      uni.removeStorageSync('divination_user')
+      
       uni.showModal({
         title: '需要登录',
         content: (res.data as any).error || '请先登录后使用AI解卦功能',
