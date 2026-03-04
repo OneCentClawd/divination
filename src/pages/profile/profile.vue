@@ -103,6 +103,11 @@ const selectedHourLabel = computed(() => {
 })
 
 const locationText = computed(() => {
+  // 优先用 locationDisplay（手动选择的地点名）
+  if (userInfo.value.locationDisplay) {
+    return userInfo.value.locationDisplay
+  }
+  // 其次用省市
   if (userInfo.value.province || userInfo.value.city) {
     const parts = [userInfo.value.province, userInfo.value.city].filter(Boolean)
     return parts.join(' ')
@@ -190,22 +195,15 @@ const getLocation = async () => {
 const chooseLocationManually = () => {
   uni.chooseLocation({
     success: async (res) => {
-      // chooseLocation 返回的 res 有 name/address
       userInfo.value.latitude = res.latitude
       userInfo.value.longitude = res.longitude
       
-      // 直接使用返回的地址信息
-      if (res.address) {
-        userInfo.value.province = res.address
-        userInfo.value.city = res.name || ''
-      } else if (res.name) {
-        userInfo.value.province = res.name
-        userInfo.value.city = ''
-      } else {
-        // 没有地址信息才调后端
-        await handleLocationSuccess(res.latitude, res.longitude)
-        return
-      }
+      // 用于显示的地址文本
+      const displayText = res.name || res.address || '已定位'
+      userInfo.value.locationDisplay = displayText
+      
+      // 调后端获取真实省市（用于运势计算）
+      handleLocationSuccess(res.latitude, res.longitude)
       
       uni.showToast({ title: '定位成功', icon: 'success' })
     },
