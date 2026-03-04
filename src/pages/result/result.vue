@@ -1,5 +1,34 @@
 <template>
   <view class="container">
+    <!-- 梅花易数体用关系展示 -->
+    <view class="meihua-card" v-if="isMeihua">
+      <view class="meihua-header">
+        <text class="meihua-title">🌸 梅花易数</text>
+      </view>
+      <view class="meihua-gua">
+        <view class="gua-item">
+          <text class="gua-label" :class="{ ti: tiGua === 'upper' }">
+            {{ tiGua === 'upper' ? '体卦' : '用卦' }}
+          </text>
+          <text class="gua-name">{{ hexagram?.upperTrigramName || '上卦' }}</text>
+          <text class="gua-element">{{ tiGua === 'upper' ? tiElement : yongElement }}</text>
+        </view>
+        <view class="gua-divider">
+          <text class="relation-text">{{ relation }}</text>
+        </view>
+        <view class="gua-item">
+          <text class="gua-label" :class="{ ti: tiGua === 'lower' }">
+            {{ tiGua === 'lower' ? '体卦' : '用卦' }}
+          </text>
+          <text class="gua-name">{{ hexagram?.lowerTrigramName || '下卦' }}</text>
+          <text class="gua-element">{{ tiGua === 'lower' ? tiElement : yongElement }}</text>
+        </view>
+      </view>
+      <view class="meihua-hint">
+        <text class="hint-text">{{ getRelationHint(relation) }}</text>
+      </view>
+    </view>
+    
     <!-- 卦象展示 -->
     <view class="hexagram-card">
       <view class="hexagram-header">
@@ -74,9 +103,29 @@ const aiLoading = ref(false)
 const lines = ref<number[]>([])
 const fromHistory = ref(false)
 
+// 梅花易数参数
+const isMeihua = ref(false)
+const tiGua = ref<'upper' | 'lower'>('upper')
+const yongGua = ref<'upper' | 'lower'>('lower')
+const tiElement = ref('')
+const yongElement = ref('')
+const relation = ref('')
+
 // 根据二进制找卦象
 const findHexagram = (binary: string) => {
   return hexagramsData.hexagrams.find(h => h.binary === binary)
+}
+
+// 体用关系吉凶提示
+const getRelationHint = (rel: string): string => {
+  const hints: Record<string, string> = {
+    '用生体': '大吉 — 用卦生体卦，事顺利，有助力',
+    '体克用': '吉 — 体卦克制用卦，可成事',
+    '比和': '中平 — 体用同类，平稳之象',
+    '体生用': '小耗 — 体卦生用卦，有付出',
+    '用克体': '不利 — 用卦克体卦，需谨慎'
+  }
+  return hints[rel] || ''
 }
 
 // 获取 AI 解读
@@ -88,27 +137,38 @@ const getAiInterpretation = async () => {
     const token = uni.getStorageSync('divination_token')
     const userInfo = uni.getStorageSync('divination_user') || {}
     
+    const requestData: any = {
+      hexagramName: hexagram.value?.chineseName,
+      hexagramJudgment: hexagram.value?.judgment,
+      hexagramImage: hexagram.value?.image,
+      changeHexagramName: changeHexagram.value?.chineseName,
+      hasChange: hasChange.value,
+      question: question.value,
+      lines: lines.value,
+      // 用户信息（可选）
+      userInfo: userInfo.birthYear ? {
+        birthYear: userInfo.birthYear,
+        birthMonth: userInfo.birthMonth,
+        birthDay: userInfo.birthDay,
+        birthHour: userInfo.birthHour,
+        gender: userInfo.gender
+      } : null
+    }
+    
+    // 梅花易数额外参数
+    if (isMeihua.value) {
+      requestData.type = 'meihua'
+      requestData.tiGua = tiGua.value
+      requestData.tiElement = tiElement.value
+      requestData.yongElement = yongElement.value
+      requestData.relation = relation.value
+    }
+    
     const res = await uni.request({
       url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/interpret',
       method: 'POST',
       header: token ? { 'Authorization': `Bearer ${token}` } : {},
-      data: {
-        hexagramName: hexagram.value?.chineseName,
-        hexagramJudgment: hexagram.value?.judgment,
-        hexagramImage: hexagram.value?.image,
-        changeHexagramName: changeHexagram.value?.chineseName,
-        hasChange: hasChange.value,
-        question: question.value,
-        lines: lines.value,
-        // 用户信息（可选）
-        userInfo: userInfo.birthYear ? {
-          birthYear: userInfo.birthYear,
-          birthMonth: userInfo.birthMonth,
-          birthDay: userInfo.birthDay,
-          birthHour: userInfo.birthHour,
-          gender: userInfo.gender
-        } : null
-      }
+      data: requestData
     })
     
     if (res.statusCode === 200 && (res.data as any).interpretation) {
@@ -159,6 +219,12 @@ onMounted(() => {
       question.value = tempData.question
       aiInterpretation.value = tempData.aiInterpretation
       lines.value = tempData.lines || []
+      // 梅花易数参数
+      isMeihua.value = tempData.isMeihua || false
+      tiGua.value = tempData.tiGua || 'upper'
+      tiElement.value = tempData.tiElement || ''
+      yongElement.value = tempData.yongElement || ''
+      relation.value = tempData.relation || ''
       return
     }
   }
@@ -168,6 +234,15 @@ onMounted(() => {
   hasChange.value = options.hasChange === 'true'
   question.value = decodeURIComponent(options.question || '')
   lines.value = (options.lines || '').split(',').map(Number)
+  
+  // 梅花易数参数
+  isMeihua.value = options.meihua === 'true'
+  if (isMeihua.value) {
+    tiGua.value = options.tiGua as 'upper' | 'lower' || 'upper'
+    tiElement.value = options.tiElement || ''
+    yongElement.value = options.yongElement || ''
+    relation.value = decodeURIComponent(options.relation || '')
+  }
   
   hexagram.value = findHexagram(binary)
   if (hasChange.value) {
@@ -181,6 +256,85 @@ onMounted(() => {
   min-height: 100vh;
   background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%);
   padding: 30rpx;
+}
+
+/* 梅花易数卡片 */
+.meihua-card {
+  background: linear-gradient(135deg, #2d2d44 0%, #1f1f35 100%);
+  border-radius: 24rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  border: 1rpx solid rgba(212, 175, 55, 0.3);
+}
+
+.meihua-header {
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.meihua-title {
+  font-size: 32rpx;
+  color: #d4af37;
+}
+
+.meihua-gua {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 20rpx;
+}
+
+.gua-item {
+  text-align: center;
+}
+
+.gua-label {
+  display: block;
+  font-size: 24rpx;
+  color: #888888;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 8rpx;
+}
+
+.gua-label.ti {
+  color: #d4af37;
+  background: rgba(212, 175, 55, 0.2);
+}
+
+.gua-name {
+  display: block;
+  font-size: 32rpx;
+  color: #ffffff;
+  margin-bottom: 4rpx;
+}
+
+.gua-element {
+  display: block;
+  font-size: 24rpx;
+  color: #888888;
+}
+
+.gua-divider {
+  text-align: center;
+}
+
+.relation-text {
+  font-size: 28rpx;
+  color: #d4af37;
+}
+
+.meihua-hint {
+  text-align: center;
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 12rpx;
+  padding: 16rpx;
+}
+
+.hint-text {
+  font-size: 24rpx;
+  color: #cccccc;
 }
 
 .hexagram-card {
