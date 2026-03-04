@@ -139,6 +139,14 @@ const getRelationHint = (rel: string): string => {
 
 // 获取 AI 解读
 const getAiInterpretation = async () => {
+  // 先检查缓存
+  const cacheKey = `divination_ai_${hexagram.value?.binary}_${question.value}`
+  const cached = uni.getStorageSync(cacheKey)
+  if (cached) {
+    aiInterpretation.value = cached
+    return
+  }
+  
   aiLoading.value = true
   
   try {
@@ -182,6 +190,9 @@ const getAiInterpretation = async () => {
     
     if (res.statusCode === 200 && (res.data as any).interpretation) {
       aiInterpretation.value = (res.data as any).interpretation
+      // 缓存解读结果
+      const cacheKey = `divination_ai_${hexagram.value?.binary}_${question.value}`
+      uni.setStorageSync(cacheKey, aiInterpretation.value)
     } else if (res.statusCode === 401) {
       // 清除过期的 token
       uni.removeStorageSync('divination_token')
