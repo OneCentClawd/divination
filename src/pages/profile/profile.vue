@@ -198,11 +198,21 @@ const chooseLocationManually = () => {
       userInfo.value.latitude = res.latitude
       userInfo.value.longitude = res.longitude
       
-      // 用于显示的地址文本
-      const displayText = res.name || res.address || '已定位'
+      // 用于显示的地址文本（优先 name，其次 address）
+      let displayText = ''
+      if (res.name) {
+        displayText = res.name
+        if (res.address) {
+          displayText += ` (${res.address})`
+        }
+      } else if (res.address) {
+        displayText = res.address
+      } else {
+        displayText = `${res.latitude.toFixed(4)}, ${res.longitude.toFixed(4)}`
+      }
       userInfo.value.locationDisplay = displayText
       
-      // 调后端获取真实省市（用于运势计算）
+      // 调后端获取真实省市（用于运势计算，不等待）
       handleLocationSuccess(res.latitude, res.longitude)
       
       uni.showToast({ title: '定位成功', icon: 'success' })
@@ -213,12 +223,12 @@ const chooseLocationManually = () => {
   })
 }
 
-// 处理定位成功
+// 处理定位成功（自动定位时调用）
 const handleLocationSuccess = async (lat: number, lng: number) => {
   userInfo.value.latitude = lat
   userInfo.value.longitude = lng
   
-  // 先设置一个默认值，确保立即显示
+  // 先设置一个默认值
   userInfo.value.province = '已定位'
   userInfo.value.city = ''
   
@@ -229,8 +239,14 @@ const handleLocationSuccess = async (lat: number, lng: number) => {
       timeout: 5000
     })
     if ((geoRes.data as any).success) {
-      userInfo.value.province = (geoRes.data as any).province || '已定位'
-      userInfo.value.city = (geoRes.data as any).city || ''
+      const province = (geoRes.data as any).province || ''
+      const city = (geoRes.data as any).city || ''
+      userInfo.value.province = province || '已定位'
+      userInfo.value.city = city
+      // 更新显示文本
+      if (province || city) {
+        userInfo.value.locationDisplay = [province, city].filter(Boolean).join(' ')
+      }
     }
   } catch (e) {
     console.error('逆地理编码失败:', e)
