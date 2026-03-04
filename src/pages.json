@@ -1,0 +1,69 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "易卦",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/divine/divine",
+      "style": {
+        "navigationBarTitleText": "起卦",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/result/result",
+      "style": {
+        "navigationBarTitleText": "卦象",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/history/history",
+      "style": {
+        "navigationBarTitleText": "历史记录",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "易卦",
+    "navigationBarBackgroundColor": "#1a1a2e",
+    "backgroundColor": "#0f0f1a",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#8b8b8b",
+    "selectedColor": "#d4af37",
+    "backgroundColor": "#1a1a2e",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "今日",
+        "iconPath": "static/tab-home.png",
+        "selectedIconPath": "static/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/divine/divine",
+        "text": "起卦",
+        "iconPath": "static/tab-divine.png",
+        "selectedIconPath": "static/tab-divine-active.png"
+      },
+      {
+        "pagePath": "pages/history/history",
+        "text": "记录",
+        "iconPath": "static/tab-history.png",
+        "selectedIconPath": "static/tab-history-active.png"
+      }
+    ]
+  }
+}

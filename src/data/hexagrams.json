@@ -1,0 +1,476 @@
+{
+  "hexagrams": [
+    {
+      "number": 1, "name": "乾", "chineseName": "乾为天", "symbol": "☰", "binary": "111111",
+      "judgment": "元亨利贞。",
+      "judgmentExplain": "大吉大利，吉祥的占卜。",
+      "image": "天行健，君子以自强不息。",
+      "lines": [
+        {"position": 1, "text": "初九：潜龙勿用。"},
+        {"position": 2, "text": "九二：见龙在田，利见大人。"},
+        {"position": 3, "text": "九三：君子终日乾乾，夕惕若厉，无咎。"},
+        {"position": 4, "text": "九四：或跃在渊，无咎。"},
+        {"position": 5, "text": "九五：飞龙在天，利见大人。"},
+        {"position": 6, "text": "上九：亢龙有悔。"}
+      ]
+    },
+    {
+      "number": 2, "name": "坤", "chineseName": "坤为地", "symbol": "☷", "binary": "000000",
+      "judgment": "元亨，利牝马之贞。",
+      "judgmentExplain": "大吉大利，利于雌马般的柔顺坚守。",
+      "image": "地势坤，君子以厚德载物。",
+      "lines": [
+        {"position": 1, "text": "初六：履霜，坚冰至。"},
+        {"position": 2, "text": "六二：直方大，不习无不利。"},
+        {"position": 3, "text": "六三：含章可贞。"},
+        {"position": 4, "text": "六四：括囊，无咎无誉。"},
+        {"position": 5, "text": "六五：黄裳，元吉。"},
+        {"position": 6, "text": "上六：龙战于野，其血玄黄。"}
+      ]
+    },
+    {
+      "number": 3, "name": "屯", "chineseName": "水雷屯", "symbol": "☵☳", "binary": "010001",
+      "judgment": "元亨利贞，勿用有攸往，利建侯。",
+      "judgmentExplain": "大吉大利，不宜有所前往，利于建立诸侯。",
+      "image": "云雷屯，君子以经纶。",
+      "lines": []
+    },
+    {
+      "number": 4, "name": "蒙", "chineseName": "山水蒙", "symbol": "☶☵", "binary": "100010",
+      "judgment": "亨。匪我求童蒙，童蒙求我。",
+      "judgmentExplain": "亨通。不是我求教于幼稚愚昧的人，而是他来求教于我。",
+      "image": "山下出泉，蒙。君子以果行育德。",
+      "lines": []
+    },
+    {
+      "number": 5, "name": "需", "chineseName": "水天需", "symbol": "☵☰", "binary": "010111",
+      "judgment": "有孚，光亨，贞吉。利涉大川。",
+      "judgmentExplain": "有诚信，光明亨通，守正吉利。",
+      "image": "云上于天，需。君子以饮食宴乐。",
+      "lines": []
+    },
+    {
+      "number": 6, "name": "讼", "chineseName": "天水讼", "symbol": "☰☵", "binary": "111010",
+      "judgment": "有孚窒惕，中吉，终凶。",
+      "judgmentExplain": "有诚信被阻塞而忧惧，中途吉利，最终凶险。",
+      "image": "天与水违行，讼。君子以作事谋始。",
+      "lines": []
+    },
+    {
+      "number": 7, "name": "师", "chineseName": "地水师", "symbol": "☷☵", "binary": "000010",
+      "judgment": "贞，丈人吉，无咎。",
+      "judgmentExplain": "守正道，德高望重的长者吉利，无灾。",
+      "image": "地中有水，师。君子以容民畜众。",
+      "lines": []
+    },
+    {
+      "number": 8, "name": "比", "chineseName": "水地比", "symbol": "☵☷", "binary": "010000",
+      "judgment": "吉。原筮元永贞，无咎。",
+      "judgmentExplain": "吉利。推究占筮，大德永远守正，无灾。",
+      "image": "地上有水，比。先王以建万国，亲诸侯。",
+      "lines": []
+    },
+    {
+      "number": 9, "name": "小畜", "chineseName": "风天小畜", "symbol": "☴☰", "binary": "110111",
+      "judgment": "亨。密云不雨，自我西郊。",
+      "judgmentExplain": "亨通。浓云密布却不下雨，从我的西郊飘来。",
+      "image": "风行天上，小畜。君子以懿文德。",
+      "lines": []
+    },
+    {
+      "number": 10, "name": "履", "chineseName": "天泽履", "symbol": "☰☱", "binary": "111011",
+      "judgment": "履虎尾，不咥人，亨。",
+      "judgmentExplain": "踩着老虎尾巴，老虎不咬人，亨通。",
+      "image": "上天下泽，履。君子以辨上下，定民志。",
+      "lines": []
+    },
+    {
+      "number": 11, "name": "泰", "chineseName": "地天泰", "symbol": "☷☰", "binary": "000111",
+      "judgment": "小往大来，吉亨。",
+      "judgmentExplain": "小的去了大的来了，吉利亨通。",
+      "image": "天地交，泰。后以财成天地之道。",
+      "lines": []
+    },
+    {
+      "number": 12, "name": "否", "chineseName": "天地否", "symbol": "☰☷", "binary": "111000",
+      "judgment": "否之匪人，不利君子贞，大往小来。",
+      "judgmentExplain": "闭塞不是好人造成的，不利于君子守正。",
+      "image": "天地不交，否。君子以俭德辟难。",
+      "lines": []
+    },
+    {
+      "number": 13, "name": "同人", "chineseName": "天火同人", "symbol": "☰☲", "binary": "111101",
+      "judgment": "同人于野，亨。利涉大川，利君子贞。",
+      "judgmentExplain": "在郊野与人和同，亨通。",
+      "image": "天与火，同人。君子以类族辨物。",
+      "lines": []
+    },
+    {
+      "number": 14, "name": "大有", "chineseName": "火天大有", "symbol": "☲☰", "binary": "101111",
+      "judgment": "元亨。",
+      "judgmentExplain": "大吉大利。",
+      "image": "火在天上，大有。君子以遏恶扬善。",
+      "lines": []
+    },
+    {
+      "number": 15, "name": "谦", "chineseName": "地山谦", "symbol": "☷☶", "binary": "000100",
+      "judgment": "亨，君子有终。",
+      "judgmentExplain": "亨通，君子有好的结局。",
+      "image": "地中有山，谦。君子以裒多益寡。",
+      "lines": []
+    },
+    {
+      "number": 16, "name": "豫", "chineseName": "雷地豫", "symbol": "☳☷", "binary": "001000",
+      "judgment": "利建侯行师。",
+      "judgmentExplain": "利于建立诸侯出兵打仗。",
+      "image": "雷出地奋，豫。先王以作乐崇德。",
+      "lines": []
+    },
+    {
+      "number": 17, "name": "随", "chineseName": "泽雷随", "symbol": "☱☳", "binary": "011001",
+      "judgment": "元亨利贞，无咎。",
+      "judgmentExplain": "大吉大利，守正道无灾。",
+      "image": "泽中有雷，随。君子以向晦入宴息。",
+      "lines": []
+    },
+    {
+      "number": 18, "name": "蛊", "chineseName": "山风蛊", "symbol": "☶☴", "binary": "100110",
+      "judgment": "元亨，利涉大川。先甲三日，后甲三日。",
+      "judgmentExplain": "大吉大利，利于涉越大河。",
+      "image": "山下有风，蛊。君子以振民育德。",
+      "lines": []
+    },
+    {
+      "number": 19, "name": "临", "chineseName": "地泽临", "symbol": "☷☱", "binary": "000011",
+      "judgment": "元亨利贞。至于八月有凶。",
+      "judgmentExplain": "大吉大利。到了八月会有凶险。",
+      "image": "泽上有地，临。君子以教思无穷。",
+      "lines": []
+    },
+    {
+      "number": 20, "name": "观", "chineseName": "风地观", "symbol": "☴☷", "binary": "110000",
+      "judgment": "盥而不荐，有孚颙若。",
+      "judgmentExplain": "祭祀时洗手而不进献祭品，诚信而庄严。",
+      "image": "风行地上，观。先王以省方观民设教。",
+      "lines": []
+    },
+    {
+      "number": 21, "name": "噬嗑", "chineseName": "火雷噬嗑", "symbol": "☲☳", "binary": "101001",
+      "judgment": "亨。利用狱。",
+      "judgmentExplain": "亨通。利于使用刑狱。",
+      "image": "雷电噬嗑。先王以明罚敕法。",
+      "lines": []
+    },
+    {
+      "number": 22, "name": "贲", "chineseName": "山火贲", "symbol": "☶☲", "binary": "100101",
+      "judgment": "亨。小利有攸往。",
+      "judgmentExplain": "亨通。稍有利于前往。",
+      "image": "山下有火，贲。君子以明庶政。",
+      "lines": []
+    },
+    {
+      "number": 23, "name": "剥", "chineseName": "山地剥", "symbol": "☶☷", "binary": "100000",
+      "judgment": "不利有攸往。",
+      "judgmentExplain": "不利于有所前往。",
+      "image": "山附于地，剥。上以厚下安宅。",
+      "lines": []
+    },
+    {
+      "number": 24, "name": "复", "chineseName": "地雷复", "symbol": "☷☳", "binary": "000001",
+      "judgment": "亨。出入无疾，朋来无咎。",
+      "judgmentExplain": "亨通。出入没有疾病，朋友来了无灾。",
+      "image": "雷在地中，复。先王以至日闭关。",
+      "lines": []
+    },
+    {
+      "number": 25, "name": "无妄", "chineseName": "天雷无妄", "symbol": "☰☳", "binary": "111001",
+      "judgment": "元亨利贞。其匪正有眚，不利有攸往。",
+      "judgmentExplain": "大吉大利。若不守正道会有灾难。",
+      "image": "天下雷行，物与无妄。先王以茂对时育万物。",
+      "lines": []
+    },
+    {
+      "number": 26, "name": "大畜", "chineseName": "山天大畜", "symbol": "☶☰", "binary": "100111",
+      "judgment": "利贞，不家食吉，利涉大川。",
+      "judgmentExplain": "利于守正，不在家吃饭吉利，利于涉越大河。",
+      "image": "天在山中，大畜。君子以多识前言往行。",
+      "lines": []
+    },
+    {
+      "number": 27, "name": "颐", "chineseName": "山雷颐", "symbol": "☶☳", "binary": "100001",
+      "judgment": "贞吉。观颐，自求口实。",
+      "judgmentExplain": "守正吉利。观察养生之道，自己寻求食物。",
+      "image": "山下有雷，颐。君子以慎言语，节饮食。",
+      "lines": []
+    },
+    {
+      "number": 28, "name": "大过", "chineseName": "泽风大过", "symbol": "☱☴", "binary": "011110",
+      "judgment": "栋桡，利有攸往，亨。",
+      "judgmentExplain": "栋梁弯曲，利于有所前往，亨通。",
+      "image": "泽灭木，大过。君子以独立不惧。",
+      "lines": []
+    },
+    {
+      "number": 29, "name": "坎", "chineseName": "坎为水", "symbol": "☵", "binary": "010010",
+      "judgment": "习坎，有孚，维心亨，行有尚。",
+      "judgmentExplain": "重重险阻，心怀诚信，心意才能亨通。",
+      "image": "水洊至，习坎。君子以常德行，习教事。",
+      "lines": []
+    },
+    {
+      "number": 30, "name": "离", "chineseName": "离为火", "symbol": "☲", "binary": "101101",
+      "judgment": "利贞，亨。畜牝牛，吉。",
+      "judgmentExplain": "利于守正，亨通。畜养母牛，吉利。",
+      "image": "明两作，离。大人以继明照于四方。",
+      "lines": []
+    },
+    {
+      "number": 31, "name": "咸", "chineseName": "泽山咸", "symbol": "☱☶", "binary": "011100",
+      "judgment": "亨，利贞，取女吉。",
+      "judgmentExplain": "亨通，利于守正，娶妻吉利。",
+      "image": "山上有泽，咸。君子以虚受人。",
+      "lines": []
+    },
+    {
+      "number": 32, "name": "恒", "chineseName": "雷风恒", "symbol": "☳☴", "binary": "001110",
+      "judgment": "亨，无咎，利贞，利有攸往。",
+      "judgmentExplain": "亨通，无灾，利于守正，利于有所前往。",
+      "image": "雷风恒。君子以立不易方。",
+      "lines": []
+    },
+    {
+      "number": 33, "name": "遁", "chineseName": "天山遁", "symbol": "☰☶", "binary": "111100",
+      "judgment": "亨，小利贞。",
+      "judgmentExplain": "亨通，稍利于守正。",
+      "image": "天下有山，遁。君子以远小人，不恶而严。",
+      "lines": []
+    },
+    {
+      "number": 34, "name": "大壮", "chineseName": "雷天大壮", "symbol": "☳☰", "binary": "001111",
+      "judgment": "利贞。",
+      "judgmentExplain": "利于守正。",
+      "image": "雷在天上，大壮。君子以非礼弗履。",
+      "lines": []
+    },
+    {
+      "number": 35, "name": "晋", "chineseName": "火地晋", "symbol": "☲☷", "binary": "101000",
+      "judgment": "康侯用锡马蕃庶，昼日三接。",
+      "judgmentExplain": "康侯受赐良马繁多，一天之内多次接见。",
+      "image": "明出地上，晋。君子以自昭明德。",
+      "lines": []
+    },
+    {
+      "number": 36, "name": "明夷", "chineseName": "地火明夷", "symbol": "☷☲", "binary": "000101",
+      "judgment": "利艰贞。",
+      "judgmentExplain": "利于艰难中守正。",
+      "image": "明入地中，明夷。君子以莅众，用晦而明。",
+      "lines": []
+    },
+    {
+      "number": 37, "name": "家人", "chineseName": "风火家人", "symbol": "☴☲", "binary": "110101",
+      "judgment": "利女贞。",
+      "judgmentExplain": "利于女子守正。",
+      "image": "风自火出，家人。君子以言有物而行有恒。",
+      "lines": []
+    },
+    {
+      "number": 38, "name": "睽", "chineseName": "火泽睽", "symbol": "☲☱", "binary": "101011",
+      "judgment": "小事吉。",
+      "judgmentExplain": "小事吉利。",
+      "image": "上火下泽，睽。君子以同而异。",
+      "lines": []
+    },
+    {
+      "number": 39, "name": "蹇", "chineseName": "水山蹇", "symbol": "☵☶", "binary": "010100",
+      "judgment": "利西南，不利东北，利见大人，贞吉。",
+      "judgmentExplain": "利于西南方，不利于东北方，利于见大人。",
+      "image": "山上有水，蹇。君子以反身修德。",
+      "lines": []
+    },
+    {
+      "number": 40, "name": "解", "chineseName": "雷水解", "symbol": "☳☵", "binary": "001010",
+      "judgment": "利西南，无所往，其来复吉。",
+      "judgmentExplain": "利于西南方，无所前往，返回吉利。",
+      "image": "雷雨作，解。君子以赦过宥罪。",
+      "lines": []
+    },
+    {
+      "number": 41, "name": "损", "chineseName": "山泽损", "symbol": "☶☱", "binary": "100011",
+      "judgment": "有孚，元吉，无咎，可贞，利有攸往。",
+      "judgmentExplain": "有诚信，大吉，无灾，可守正。",
+      "image": "山下有泽，损。君子以惩忿窒欲。",
+      "lines": []
+    },
+    {
+      "number": 42, "name": "益", "chineseName": "风雷益", "symbol": "☴☳", "binary": "110001",
+      "judgment": "利有攸往，利涉大川。",
+      "judgmentExplain": "利于有所前往，利于涉越大河。",
+      "image": "风雷益。君子以见善则迁，有过则改。",
+      "lines": []
+    },
+    {
+      "number": 43, "name": "夬", "chineseName": "泽天夬", "symbol": "☱☰", "binary": "011111",
+      "judgment": "扬于王庭，孚号有厉，告自邑，不利即戎，利有攸往。",
+      "judgmentExplain": "在王庭宣扬，诚信号令虽有危险，从城邑告知。",
+      "image": "泽上于天，夬。君子以施禄及下。",
+      "lines": []
+    },
+    {
+      "number": 44, "name": "姤", "chineseName": "天风姤", "symbol": "☰☴", "binary": "111110",
+      "judgment": "女壮，勿用取女。",
+      "judgmentExplain": "女子强壮，不宜娶这样的女子。",
+      "image": "天下有风，姤。后以施命诰四方。",
+      "lines": []
+    },
+    {
+      "number": 45, "name": "萃", "chineseName": "泽地萃", "symbol": "☱☷", "binary": "011000",
+      "judgment": "亨。王假有庙，利见大人，亨，利贞。",
+      "judgmentExplain": "亨通。王到宗庙祭祀，利于见大人。",
+      "image": "泽上于地，萃。君子以除戎器，戒不虞。",
+      "lines": []
+    },
+    {
+      "number": 46, "name": "升", "chineseName": "地风升", "symbol": "☷☴", "binary": "000110",
+      "judgment": "元亨，用见大人，勿恤，南征吉。",
+      "judgmentExplain": "大吉大利，宜于见大人，不用忧虑。",
+      "image": "地中生木，升。君子以顺德，积小以高大。",
+      "lines": []
+    },
+    {
+      "number": 47, "name": "困", "chineseName": "泽水困", "symbol": "☱☵", "binary": "011010",
+      "judgment": "亨，贞，大人吉，无咎，有言不信。",
+      "judgmentExplain": "亨通，守正，大人吉利，无灾。",
+      "image": "泽无水，困。君子以致命遂志。",
+      "lines": []
+    },
+    {
+      "number": 48, "name": "井", "chineseName": "水风井", "symbol": "☵☴", "binary": "010110",
+      "judgment": "改邑不改井，无丧无得，往来井井。",
+      "judgmentExplain": "改变城邑不改变井，无丧失也无得益。",
+      "image": "木上有水，井。君子以劳民劝相。",
+      "lines": []
+    },
+    {
+      "number": 49, "name": "革", "chineseName": "泽火革", "symbol": "☱☲", "binary": "011101",
+      "judgment": "己日乃孚，元亨利贞，悔亡。",
+      "judgmentExplain": "己日才能取信于人，大吉大利，悔恨消失。",
+      "image": "泽中有火，革。君子以治历明时。",
+      "lines": []
+    },
+    {
+      "number": 50, "name": "鼎", "chineseName": "火风鼎", "symbol": "☲☴", "binary": "101110",
+      "judgment": "元吉，亨。",
+      "judgmentExplain": "大吉大利，亨通。",
+      "image": "木上有火，鼎。君子以正位凝命。",
+      "lines": []
+    },
+    {
+      "number": 51, "name": "震", "chineseName": "震为雷", "symbol": "☳", "binary": "001001",
+      "judgment": "亨。震来虩虩，笑言哑哑。",
+      "judgmentExplain": "亨通。雷声来时惊恐万分，过后谈笑自若。",
+      "image": "洊雷震。君子以恐惧修省。",
+      "lines": []
+    },
+    {
+      "number": 52, "name": "艮", "chineseName": "艮为山", "symbol": "☶", "binary": "100100",
+      "judgment": "艮其背，不获其身，行其庭，不见其人，无咎。",
+      "judgmentExplain": "止于背后，得不到他的身体，行于庭院，见不到他人。",
+      "image": "兼山艮。君子以思不出其位。",
+      "lines": []
+    },
+    {
+      "number": 53, "name": "渐", "chineseName": "风山渐", "symbol": "☴☶", "binary": "110100",
+      "judgment": "女归吉，利贞。",
+      "judgmentExplain": "女子出嫁吉利，利于守正。",
+      "image": "山上有木，渐。君子以居贤德善俗。",
+      "lines": []
+    },
+    {
+      "number": 54, "name": "归妹", "chineseName": "雷泽归妹", "symbol": "☳☱", "binary": "001011",
+      "judgment": "征凶，无攸利。",
+      "judgmentExplain": "出征凶险，没有什么利益。",
+      "image": "泽上有雷，归妹。君子以永终知敝。",
+      "lines": []
+    },
+    {
+      "number": 55, "name": "丰", "chineseName": "雷火丰", "symbol": "☳☲", "binary": "001101",
+      "judgment": "亨，王假之，勿忧，宜日中。",
+      "judgmentExplain": "亨通，王到达此处，不用忧虑，宜在日中。",
+      "image": "雷电皆至，丰。君子以折狱致刑。",
+      "lines": []
+    },
+    {
+      "number": 56, "name": "旅", "chineseName": "火山旅", "symbol": "☲☶", "binary": "101100",
+      "judgment": "小亨，旅贞吉。",
+      "judgmentExplain": "稍有亨通，旅途守正吉利。",
+      "image": "山上有火，旅。君子以明慎用刑。",
+      "lines": []
+    },
+    {
+      "number": 57, "name": "巽", "chineseName": "巽为风", "symbol": "☴", "binary": "110110",
+      "judgment": "小亨，利有攸往，利见大人。",
+      "judgmentExplain": "稍有亨通，利于有所前往，利于见大人。",
+      "image": "随风巽。君子以申命行事。",
+      "lines": []
+    },
+    {
+      "number": 58, "name": "兑", "chineseName": "兑为泽", "symbol": "☱", "binary": "011011",
+      "judgment": "亨，利贞。",
+      "judgmentExplain": "亨通，利于守正。",
+      "image": "丽泽兑。君子以朋友讲习。",
+      "lines": []
+    },
+    {
+      "number": 59, "name": "涣", "chineseName": "风水涣", "symbol": "☴☵", "binary": "110010",
+      "judgment": "亨。王假有庙，利涉大川，利贞。",
+      "judgmentExplain": "亨通。王到宗庙祭祀，利于涉越大河。",
+      "image": "风行水上，涣。先王以享于帝立庙。",
+      "lines": []
+    },
+    {
+      "number": 60, "name": "节", "chineseName": "水泽节", "symbol": "☵☱", "binary": "010011",
+      "judgment": "亨。苦节不可贞。",
+      "judgmentExplain": "亨通。过分节制不可守正。",
+      "image": "泽上有水，节。君子以制数度，议德行。",
+      "lines": []
+    },
+    {
+      "number": 61, "name": "中孚", "chineseName": "风泽中孚", "symbol": "☴☱", "binary": "110011",
+      "judgment": "豚鱼吉，利涉大川，利贞。",
+      "judgmentExplain": "猪鱼吉利，利于涉越大河，利于守正。",
+      "image": "泽上有风，中孚。君子以议狱缓死。",
+      "lines": []
+    },
+    {
+      "number": 62, "name": "小过", "chineseName": "雷山小过", "symbol": "☳☶", "binary": "001100",
+      "judgment": "亨，利贞，可小事，不可大事。",
+      "judgmentExplain": "亨通，利于守正，可做小事，不可做大事。",
+      "image": "山上有雷，小过。君子以行过乎恭。",
+      "lines": []
+    },
+    {
+      "number": 63, "name": "既济", "chineseName": "水火既济", "symbol": "☵☲", "binary": "010101",
+      "judgment": "亨，小利贞，初吉终乱。",
+      "judgmentExplain": "亨通，稍利于守正，起初吉利最终混乱。",
+      "image": "水在火上，既济。君子以思患而预防之。",
+      "lines": []
+    },
+    {
+      "number": 64, "name": "未济", "chineseName": "火水未济", "symbol": "☲☵", "binary": "101010",
+      "judgment": "亨，小狐汔济，濡其尾，无攸利。",
+      "judgmentExplain": "亨通，小狐狸快要渡河，弄湿了尾巴。",
+      "image": "火在水上，未济。君子以慎辨物居方。",
+      "lines": []
+    }
+  ],
+  "trigrams": [
+    {"name": "乾", "symbol": "☰", "binary": "111", "nature": "天", "attribute": "健"},
+    {"name": "坤", "symbol": "☷", "binary": "000", "nature": "地", "attribute": "顺"},
+    {"name": "震", "symbol": "☳", "binary": "001", "nature": "雷", "attribute": "动"},
+    {"name": "巽", "symbol": "☴", "binary": "110", "nature": "风", "attribute": "入"},
+    {"name": "坎", "symbol": "☵", "binary": "010", "nature": "水", "attribute": "陷"},
+    {"name": "离", "symbol": "☲", "binary": "101", "nature": "火", "attribute": "丽"},
+    {"name": "艮", "symbol": "☶", "binary": "100", "nature": "山", "attribute": "止"},
+    {"name": "兑", "symbol": "☱", "binary": "011", "nature": "泽", "attribute": "悦"}
+  ]
+}
