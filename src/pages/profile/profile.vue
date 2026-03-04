@@ -103,8 +103,9 @@ const selectedHourLabel = computed(() => {
 })
 
 const locationText = computed(() => {
-  if (userInfo.value.province && userInfo.value.city) {
-    return `${userInfo.value.province} ${userInfo.value.city}`
+  if (userInfo.value.province || userInfo.value.city) {
+    const parts = [userInfo.value.province, userInfo.value.city].filter(Boolean)
+    return parts.join(' ')
   }
   return ''
 })
@@ -202,21 +203,23 @@ const handleLocationSuccess = async (lat: number, lng: number) => {
   userInfo.value.latitude = lat
   userInfo.value.longitude = lng
   
+  // 先设置一个默认值，确保立即显示
+  userInfo.value.province = '已定位'
+  userInfo.value.city = ''
+  
   // 调用后端逆地理编码获取真实省市
   try {
     const geoRes = await uni.request({
-      url: `https://lonely.centralus.cloudapp.azure.com/api/divination/geocode?lat=${lat}&lng=${lng}`
+      url: `https://lonely.centralus.cloudapp.azure.com/api/divination/geocode?lat=${lat}&lng=${lng}`,
+      timeout: 5000
     })
     if ((geoRes.data as any).success) {
-      userInfo.value.province = (geoRes.data as any).province
-      userInfo.value.city = (geoRes.data as any).city
-    } else {
-      userInfo.value.province = '已定位'
-      userInfo.value.city = ''
+      userInfo.value.province = (geoRes.data as any).province || '已定位'
+      userInfo.value.city = (geoRes.data as any).city || ''
     }
   } catch (e) {
-    userInfo.value.province = '已定位'
-    userInfo.value.city = ''
+    console.error('逆地理编码失败:', e)
+    // 保持默认值
   }
   
   uni.showToast({ title: '定位成功', icon: 'success' })
