@@ -96,28 +96,24 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import hexagramsData from '@/data/hexagrams.json'
+import { solarToLunar } from '@/utils/lunar'
 
 const dailyHexagram = ref<any>(null)
 const fortune = ref<any>({})
 
 const todayDate = computed(() => {
   const now = new Date()
-  const heavenlyStems = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸']
-  const earthlyBranches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥']
-  const chineseMonths = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '臘']
-  const chineseDays = ['初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十',
-    '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
-    '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十', '三十一']
-  
   const year = now.getFullYear()
-  const stemIndex = (year - 4) % 10
-  const branchIndex = (year - 4) % 12
-  const ganZhiYear = heavenlyStems[stemIndex] + earthlyBranches[branchIndex] + '年'
+  const month = now.getMonth() + 1
+  const day = now.getDate()
   
-  const gregorian = `${year}年${now.getMonth() + 1}月${now.getDate()}日`
-  const lunar = `${ganZhiYear} ${chineseMonths[now.getMonth()]}月${chineseDays[now.getDate() - 1]}`
+  // 公历
+  const gregorian = `${year}年${month}月${day}日`
   
-  return { gregorian, lunar }
+  // 真正的农历
+  const lunar = solarToLunar(year, month, day)
+  
+  return { gregorian, lunar: lunar.fullStr }
 })
 
 // 获取每日卦象（无用户信息时用）
