@@ -54,8 +54,20 @@ const dailyHexagram = ref<any>(null)
 
 const todayDate = computed(() => {
   const now = new Date()
-  const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
-  return `${months[now.getMonth()]}${now.getDate()}日`
+  // 天干地支
+  const heavenlyStems = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸']
+  const earthlyBranches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥']
+  const chineseMonths = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '臘']
+  const chineseDays = ['初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十',
+    '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
+    '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十', '三十一']
+  
+  const year = now.getFullYear()
+  const stemIndex = (year - 4) % 10
+  const branchIndex = (year - 4) % 12
+  const ganZhiYear = heavenlyStems[stemIndex] + earthlyBranches[branchIndex] + '年'
+  
+  return `${ganZhiYear} ${chineseMonths[now.getMonth()]}月${chineseDays[now.getDate() - 1]}`
 })
 
 // 根据日期生成每日卦象
