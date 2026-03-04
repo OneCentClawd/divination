@@ -148,12 +148,24 @@ const num1 = ref('')
 const num2 = ref('')
 const result = ref<MeihuaResult | null>(null)
 
-// 农历日期
-const lunarDate = computed(() => {
+// 获取农历信息
+const getLunarInfo = () => {
   const now = new Date()
   const solar = Solar.fromDate(now)
   const lunar = solar.getLunar()
-  return `农历${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`
+  return {
+    year: lunar.getYear(),
+    month: lunar.getMonth(),
+    day: lunar.getDay(),
+    monthChinese: lunar.getMonthInChinese(),
+    dayChinese: lunar.getDayInChinese()
+  }
+}
+
+// 农历日期
+const lunarDate = computed(() => {
+  const lunar = getLunarInfo()
+  return `农历${lunar.monthChinese}月${lunar.dayChinese}`
 })
 
 // 当前时辰
@@ -192,7 +204,9 @@ const doDivineByNumber = () => {
 
 // 时间起卦
 const doDivineByTime = () => {
-  result.value = divineByCurrentTime()
+  const lunar = getLunarInfo()
+  const currentHourNum = new Date().getHours()
+  result.value = divineByCurrentTime(lunar.year, lunar.month, lunar.day, currentHourNum)
   stage.value = 'result'
 }
 

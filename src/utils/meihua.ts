@@ -81,22 +81,10 @@ export function divineByTime(lunarYear: number, lunarMonth: number, lunarDay: nu
 }
 
 /**
- * 当前时间自动起卦
+ * 当前时间自动起卦（需要传入农历信息）
  */
-export function divineByCurrentTime(): MeihuaResult {
-  // 使用 lunar-javascript 获取农历
-  // @ts-ignore
-  const Solar = require('lunar-javascript').Solar
-  const now = new Date()
-  const solar = Solar.fromDate(now)
-  const lunar = solar.getLunar()
-  
-  const lunarYear = lunar.getYear()
-  const lunarMonth = lunar.getMonth()
-  const lunarDay = lunar.getDay()
-  
+export function divineByCurrentTime(lunarYear: number, lunarMonth: number, lunarDay: number, currentHour: number): MeihuaResult {
   // 计算时辰（23:00-01:00=子时=0）
-  const currentHour = now.getHours()
   let hour = Math.floor((currentHour + 1) / 2) % 12
   
   return divineByTime(lunarYear, lunarMonth, lunarDay, hour)
