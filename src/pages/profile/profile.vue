@@ -177,24 +177,19 @@ const getLocation = async () => {
     userInfo.value.latitude = res.latitude
     userInfo.value.longitude = res.longitude
     
-    // 使用微信逆地理编码
-    // @ts-ignore
-    const qqmapsdk = uni.requireNativePlugin ? null : null
-    
-    // 简化处理：调用腾讯地图 API
+    // 调用后端逆地理编码
     try {
       const geoRes = await uni.request({
-        url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${res.latitude},${res.longitude}&key=TXNBZ-NJOK3-WXX3V-3JSBP-CHVHN-WBBU6`
+        url: `https://lonely.centralus.cloudapp.azure.com/api/divination/geocode?lat=${res.latitude}&lng=${res.longitude}`
       })
-      if ((geoRes.data as any).status === 0) {
-        const addr = (geoRes.data as any).result.address_component
-        userInfo.value.province = addr.province
-        userInfo.value.city = addr.city
+      if ((geoRes.data as any).success) {
+        userInfo.value.province = (geoRes.data as any).province
+        userInfo.value.city = (geoRes.data as any).city
       }
     } catch (e) {
       // 降级处理
       userInfo.value.province = '已定位'
-      userInfo.value.city = `${res.latitude.toFixed(2)}, ${res.longitude.toFixed(2)}`
+      userInfo.value.city = ''
     }
     
     uni.showToast({ title: '定位成功', icon: 'success' })
