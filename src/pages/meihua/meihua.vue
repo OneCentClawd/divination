@@ -565,4 +565,3 @@ const divineAgain = () => {
   border: 1rpx solid rgba(212, 175, 55, 0.3);
 }
 </style>
-</template>
