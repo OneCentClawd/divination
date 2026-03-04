@@ -57,7 +57,7 @@
     </view>
     
     <!-- 保存按钮 -->
-    <button class="save-btn" @click="saveToHistory">保存到历史记录</button>
+    <button class="save-btn" @click="saveToHistory" v-if="!fromHistory">保存到历史记录</button>
   </view>
 </template>
 
@@ -72,6 +72,7 @@ const question = ref('')
 const aiInterpretation = ref('')
 const aiLoading = ref(false)
 const lines = ref<number[]>([])
+const fromHistory = ref(false)
 
 // 根据二进制找卦象
 const findHexagram = (binary: string) => {
@@ -137,6 +138,7 @@ onMounted(() => {
   
   // 检查是否从历史记录进入
   if (options.fromHistory === 'true') {
+    fromHistory.value = true
     const tempData = uni.getStorageSync('temp_divination')
     if (tempData) {
       hexagram.value = tempData.hexagram
