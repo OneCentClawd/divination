@@ -96,7 +96,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import hexagramsData from '@/data/hexagrams.json'
-import { solarToLunar } from '@/utils/lunar'
+// @ts-ignore
+import { Solar } from 'lunar-javascript'
 
 const dailyHexagram = ref<any>(null)
 const fortune = ref<any>({})
@@ -110,10 +111,14 @@ const todayDate = computed(() => {
   // 公历
   const gregorian = `${year}年${month}月${day}日`
   
-  // 真正的农历
-  const lunar = solarToLunar(year, month, day)
+  // 真正的农历（使用 lunar-javascript）
+  const solar = Solar.fromYmd(year, month, day)
+  const lunar = solar.getLunar()
+  const ganZhiYear = lunar.getYearInGanZhi() + '年'
+  const monthStr = lunar.getMonthInChinese() + '月'
+  const dayStr = lunar.getDayInChinese()
   
-  return { gregorian, lunar: lunar.fullStr }
+  return { gregorian, lunar: `${ganZhiYear} ${monthStr}${dayStr}` }
 })
 
 // 获取每日卦象（无用户信息时用）
