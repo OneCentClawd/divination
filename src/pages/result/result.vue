@@ -190,9 +190,14 @@ const getAiInterpretation = async () => {
     
     if (res.statusCode === 200 && (res.data as any).interpretation) {
       aiInterpretation.value = (res.data as any).interpretation
-      // 缓存解读结果
+      // 缓存解读结果到本地
       const cacheKey = `divination_ai_${hexagram.value?.binary}_${question.value}`
       uni.setStorageSync(cacheKey, aiInterpretation.value)
+      
+      // 保存到后端
+      if (token) {
+        saveToBackend()
+      }
     } else if (res.statusCode === 401) {
       // 清除过期的 token
       uni.removeStorageSync('divination_token')
@@ -219,7 +224,37 @@ const getAiInterpretation = async () => {
   }
 }
 
-// 保存到历史
+// 保存到后端
+const saveToBackend = async () => {
+  const token = uni.getStorageSync('divination_token')
+  if (!token) return
+  
+  try {
+    await uni.request({
+      url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/user/records',
+      method: 'POST',
+      header: { 'Authorization': `Bearer ${token}` },
+      data: {
+        hexagramBinary: hexagram.value?.binary,
+        hexagramName: hexagram.value?.chineseName,
+        changeBinary: changeHexagram.value?.binary,
+        changeHexagramName: changeHexagram.value?.chineseName,
+        hasChange: hasChange.value,
+        isMeihua: isMeihua.value,
+        tiGua: tiGua.value,
+        tiElement: tiElement.value,
+        yongElement: yongElement.value,
+        relation: relation.value,
+        question: question.value,
+        aiInterpretation: aiInterpretation.value
+      }
+    })
+  } catch (e) {
+    console.error('保存到后端失败:', e)
+  }
+}
+
+// 保存到历史（本地）
 const saveToHistory = () => {
   const history = uni.getStorageSync('divination_history') || []
   history.unshift({
