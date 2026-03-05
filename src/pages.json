@@ -25,6 +25,22 @@
       }
     },
     {
+      "path": "pages/tarot/tarot",
+      "style": {
+        "navigationBarTitleText": "塔罗占卜",
+        "navigationBarBackgroundColor": "#1a0a2e",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/tarot-result/tarot-result",
+      "style": {
+        "navigationBarTitleText": "塔罗启示",
+        "navigationBarBackgroundColor": "#1a0a2e",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
       "path": "pages/result/result",
       "style": {
         "navigationBarTitleText": "卦象",

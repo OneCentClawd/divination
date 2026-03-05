@@ -84,10 +84,10 @@
         <text class="action-desc">数字/时间起卦</text>
       </view>
       
-      <view class="action-card disabled">
-        <text class="action-icon">🎴</text>
+      <view class="action-card" @click="goToTarot">
+        <text class="action-icon">🔮</text>
         <text class="action-title">塔罗占卜</text>
-        <text class="action-desc">即将上线</text>
+        <text class="action-desc">单牌/三牌阵</text>
       </view>
     </view>
   </view>
@@ -169,6 +169,12 @@ const goToDivine = (method: string) => {
 const goToMeihua = () => {
   uni.navigateTo({
     url: '/pages/meihua/meihua'
+  })
+}
+
+const goToTarot = () => {
+  uni.navigateTo({
+    url: '/pages/tarot/tarot'
   })
 }
 
