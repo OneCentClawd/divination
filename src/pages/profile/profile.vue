@@ -324,20 +324,49 @@ const tryAutoLocation = () => {
 }
 
 // 检查登录状态
-onMounted(() => {
+onMounted(async () => {
   const savedToken = uni.getStorageSync('divination_token')
   const savedUser = uni.getStorageSync('divination_user')
   
   if (savedToken) {
-    userInfo.value = savedUser || {}
-    isLoggedIn.value = true
-    
-    if (userInfo.value.birthYear) {
-      birthDate.value = `${userInfo.value.birthYear}-${String(userInfo.value.birthMonth).padStart(2, '0')}-${String(userInfo.value.birthDay).padStart(2, '0')}`
+    // 验证 token 是否有效
+    try {
+      const res = await uni.request({
+        url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/user/profile',
+        method: 'GET',
+        header: { 'Authorization': `Bearer ${savedToken}` }
+      })
+      
+      if (res.statusCode === 200 && (res.data as any).success) {
+        // token 有效
+        userInfo.value = (res.data as any).user || savedUser || {}
+        isLoggedIn.value = true
+        
+        // 更新本地缓存
+        uni.setStorageSync('divination_user', userInfo.value)
+        
+        if (userInfo.value.birthYear) {
+          birthDate.value = `${userInfo.value.birthYear}-${String(userInfo.value.birthMonth).padStart(2, '0')}-${String(userInfo.value.birthDay).padStart(2, '0')}`
+        }
+        
+        // 尝试自动定位
+        tryAutoLocation()
+      } else {
+        // token 无效，清除登录状态
+        uni.removeStorageSync('divination_token')
+        uni.removeStorageSync('divination_user')
+        isLoggedIn.value = false
+      }
+    } catch (e) {
+      console.error('验证 token 失败:', e)
+      // 网络错误时先用本地数据，不清除登录状态
+      userInfo.value = savedUser || {}
+      isLoggedIn.value = true
+      
+      if (userInfo.value.birthYear) {
+        birthDate.value = `${userInfo.value.birthYear}-${String(userInfo.value.birthMonth).padStart(2, '0')}-${String(userInfo.value.birthDay).padStart(2, '0')}`
+      }
     }
-    
-    // 尝试自动定位
-    tryAutoLocation()
   }
 })
 </script>
