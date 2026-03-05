@@ -123,25 +123,33 @@ const isProfileComplete = computed(() => {
 
 // 微信登录
 const handleLogin = async () => {
+  console.log('[登录] 开始登录流程')
   try {
     const loginRes = await uni.login({ provider: 'weixin' })
     const code = loginRes.code
+    console.log('[登录] 获取到 code:', code)
     
     if (!code) {
+      console.log('[登录] code 为空')
       uni.showToast({ title: '获取登录凭证失败', icon: 'none' })
       return
     }
     
+    console.log('[登录] 发送登录请求...')
     const res = await uni.request({
       url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/user/login',
       method: 'POST',
       data: { code }
     })
     
+    console.log('[登录] 响应 statusCode:', res.statusCode)
+    console.log('[登录] 响应 data:', JSON.stringify(res.data))
+    
     if ((res.data as any).success) {
       const token = (res.data as any).token
       userInfo.value = (res.data as any).user
       isLoggedIn.value = true
+      console.log('[登录] 登录成功, token:', token?.substring(0, 20) + '...')
       
       // 保存 token 和用户信息
       uni.setStorageSync('divination_token', token)
@@ -152,10 +160,11 @@ const handleLogin = async () => {
         birthDate.value = `${userInfo.value.birthYear}-${String(userInfo.value.birthMonth).padStart(2, '0')}-${String(userInfo.value.birthDay).padStart(2, '0')}`
       }
     } else {
-      uni.showToast({ title: '登录失败', icon: 'none' })
+      console.log('[登录] 登录失败:', (res.data as any).error)
+      uni.showToast({ title: (res.data as any).error || '登录失败', icon: 'none' })
     }
   } catch (e) {
-    console.error('登录失败:', e)
+    console.error('[登录] 异常:', e)
     uni.showToast({ title: '登录失败', icon: 'none' })
   }
 }
@@ -326,11 +335,14 @@ const tryAutoLocation = () => {
 
 // 检查登录状态
 onShow(async () => {
+  console.log('[onShow] 检查登录状态')
   const savedToken = uni.getStorageSync('divination_token')
   const savedUser = uni.getStorageSync('divination_user')
+  console.log('[onShow] savedToken:', savedToken ? savedToken.substring(0, 20) + '...' : 'null')
   
   if (savedToken) {
     // 验证 token 是否有效
+    console.log('[onShow] 验证 token...')
     try {
       const res = await uni.request({
         url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/user/profile',
@@ -338,8 +350,12 @@ onShow(async () => {
         header: { 'Authorization': `Bearer ${savedToken}` }
       })
       
+      console.log('[onShow] 验证响应 statusCode:', res.statusCode)
+      console.log('[onShow] 验证响应 data:', JSON.stringify(res.data))
+      
       if (res.statusCode === 200 && (res.data as any).success) {
         // token 有效
+        console.log('[onShow] token 有效')
         userInfo.value = (res.data as any).user || savedUser || {}
         isLoggedIn.value = true
         
@@ -354,12 +370,13 @@ onShow(async () => {
         tryAutoLocation()
       } else {
         // token 无效，清除登录状态
+        console.log('[onShow] token 无效，清除登录状态')
         uni.removeStorageSync('divination_token')
         uni.removeStorageSync('divination_user')
         isLoggedIn.value = false
       }
     } catch (e) {
-      console.error('验证 token 失败:', e)
+      console.error('[onShow] 验证 token 异常:', e)
       // 网络错误时先用本地数据，不清除登录状态
       userInfo.value = savedUser || {}
       isLoggedIn.value = true
@@ -368,6 +385,9 @@ onShow(async () => {
         birthDate.value = `${userInfo.value.birthYear}-${String(userInfo.value.birthMonth).padStart(2, '0')}-${String(userInfo.value.birthDay).padStart(2, '0')}`
       }
     }
+  } else {
+    console.log('[onShow] 无 token，显示登录按钮')
+    isLoggedIn.value = false
   }
 })
 </script>
