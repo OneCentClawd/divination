@@ -73,8 +73,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { onShow } from '@dcloudio/uni-app'
+import { ref, computed } from 'vue'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 
 const isLoggedIn = ref(false)
 const userInfo = ref<any>({})
@@ -392,15 +392,15 @@ const checkLoginStatus = async () => {
   }
 }
 
-onMounted(() => {
-  console.log('[onMounted] 组件挂载')
+onLoad(() => {
+  console.log('[onLoad] 页面加载')
   isMounted.value = true
   checkLoginStatus()
 })
 
 onShow(() => {
   console.log('[onShow] 页面显示, isMounted:', isMounted.value)
-  // 只有挂载后才执行，避免首次渲染前调用
+  // 只有加载后才执行，避免首次渲染前调用
   if (isMounted.value) {
     checkLoginStatus()
   }
