@@ -73,11 +73,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 
 const isLoggedIn = ref(false)
 const userInfo = ref<any>({})
+const isMounted = ref(false)
 
 const birthDate = ref('')
 const genderOptions = ['未知', '男', '女']
@@ -334,15 +335,15 @@ const tryAutoLocation = () => {
 }
 
 // 检查登录状态
-onShow(async () => {
-  console.log('[onShow] 检查登录状态')
+const checkLoginStatus = async () => {
+  console.log('[checkLogin] 检查登录状态')
   const savedToken = uni.getStorageSync('divination_token')
   const savedUser = uni.getStorageSync('divination_user')
-  console.log('[onShow] savedToken:', savedToken ? savedToken.substring(0, 20) + '...' : 'null')
+  console.log('[checkLogin] savedToken:', savedToken ? savedToken.substring(0, 20) + '...' : 'null')
   
   if (savedToken) {
     // 验证 token 是否有效
-    console.log('[onShow] 验证 token...')
+    console.log('[checkLogin] 验证 token...')
     try {
       const res = await uni.request({
         url: 'https://lonely.centralus.cloudapp.azure.com/api/divination/user/profile',
@@ -350,12 +351,12 @@ onShow(async () => {
         header: { 'Authorization': `Bearer ${savedToken}` }
       })
       
-      console.log('[onShow] 验证响应 statusCode:', res.statusCode)
-      console.log('[onShow] 验证响应 data:', JSON.stringify(res.data))
+      console.log('[checkLogin] 验证响应 statusCode:', res.statusCode)
+      console.log('[checkLogin] 验证响应 data:', JSON.stringify(res.data))
       
       if (res.statusCode === 200 && (res.data as any).success) {
         // token 有效
-        console.log('[onShow] token 有效')
+        console.log('[checkLogin] token 有效')
         userInfo.value = (res.data as any).user || savedUser || {}
         isLoggedIn.value = true
         
@@ -370,13 +371,13 @@ onShow(async () => {
         tryAutoLocation()
       } else {
         // token 无效，清除登录状态
-        console.log('[onShow] token 无效，清除登录状态')
+        console.log('[checkLogin] token 无效，清除登录状态')
         uni.removeStorageSync('divination_token')
         uni.removeStorageSync('divination_user')
         isLoggedIn.value = false
       }
     } catch (e) {
-      console.error('[onShow] 验证 token 异常:', e)
+      console.error('[checkLogin] 验证 token 异常:', e)
       // 网络错误时先用本地数据，不清除登录状态
       userInfo.value = savedUser || {}
       isLoggedIn.value = true
@@ -386,8 +387,22 @@ onShow(async () => {
       }
     }
   } else {
-    console.log('[onShow] 无 token，显示登录按钮')
+    console.log('[checkLogin] 无 token，显示登录按钮')
     isLoggedIn.value = false
+  }
+}
+
+onMounted(() => {
+  console.log('[onMounted] 组件挂载')
+  isMounted.value = true
+  checkLoginStatus()
+})
+
+onShow(() => {
+  console.log('[onShow] 页面显示, isMounted:', isMounted.value)
+  // 只有挂载后才执行，避免首次渲染前调用
+  if (isMounted.value) {
+    checkLoginStatus()
   }
 })
 </script>
