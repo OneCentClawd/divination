@@ -139,7 +139,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { singleCardReading, threeCardReading, type DrawnCard } from '@/utils/tarot'
+import { majorArcana, type TarotCard, type DrawnCard } from '@/utils/tarot'
 
 type Stage = 'select' | 'question' | 'shuffle' | 'pick' | 'reveal'
 type SpreadType = 'single' | 'three'
@@ -153,8 +153,12 @@ const revealedIndices = ref<number[]>([])
 const pickedIndices = ref<number[]>([])
 const hoveringIndex = ref(-1)
 
+// 洗好的牌堆（每个位置对应一张牌+正逆位）
+const shuffledDeck = ref<DrawnCard[]>([])
+
 // 牌堆显示数量
-const deckDisplay = computed(() => Array(12).fill(0))
+const deckSize = 12
+const deckDisplay = computed(() => Array(deckSize).fill(0))
 
 // 需要选的牌数
 const needCount = computed(() => spreadType.value === 'single' ? 1 : 3)
@@ -175,10 +179,27 @@ const selectSpread = (type: SpreadType) => {
   stage.value = 'question'
 }
 
+// Fisher-Yates 洗牌
+const shuffleDeck = () => {
+  const deck = [...majorArcana]
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]]
+  }
+  // 生成展示用的牌堆（取前 deckSize 张，每张随机正逆位）
+  shuffledDeck.value = deck.slice(0, deckSize).map(card => ({
+    card,
+    isReversed: Math.random() < 0.5
+  }))
+}
+
 // 开始洗牌
 const startShuffle = () => {
   stage.value = 'shuffle'
   isShuffling.value = true
+  
+  // 洗牌
+  shuffleDeck()
   
   // 洗牌动画 2 秒
   setTimeout(() => {
@@ -189,24 +210,31 @@ const startShuffle = () => {
 // 进入选牌
 const goToSelect = () => {
   pickedIndices.value = []
+  drawnCards.value = []
   stage.value = 'pick'
 }
 
-// 选牌
+// 三牌阵位置名称
+const positionNames = ['过去', '现在', '未来']
+
+// 选牌 - 用户点哪个位置就是那张牌
 const pickCard = (index: number) => {
   if (pickedIndices.value.includes(index)) return
   if (pickedIndices.value.length >= needCount.value) return
   
   pickedIndices.value.push(index)
   
-  // 选够了就抽牌
+  // 把选的牌加入结果
+  const picked = shuffledDeck.value[index]
+  const position = spreadType.value === 'three' ? positionNames[drawnCards.value.length] : undefined
+  drawnCards.value.push({
+    ...picked,
+    position
+  })
+  
+  // 选够了就进入翻牌阶段
   if (pickedIndices.value.length === needCount.value) {
     setTimeout(() => {
-      if (spreadType.value === 'single') {
-        drawnCards.value = [singleCardReading()]
-      } else {
-        drawnCards.value = threeCardReading()
-      }
       revealedIndices.value = []
       stage.value = 'reveal'
     }, 500)

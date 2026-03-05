@@ -145,9 +145,7 @@ const getAiInterpretation = async () => {
     
     if (res.statusCode === 200 && (res.data as any).interpretation) {
       aiInterpretation.value = (res.data as any).interpretation
-      
-      // 保存到后端
-      saveToBackend()
+      // 不自动保存，让用户点"保存记录"按钮
     } else if (res.statusCode === 401) {
       uni.removeStorageSync('divination_token')
       uni.removeStorageSync('divination_user')
@@ -195,8 +193,9 @@ const saveToBackend = async () => {
   }
 }
 
-// 保存到历史
-const saveToHistory = () => {
+// 保存到历史（本地 + 后端）
+const saveToHistory = async () => {
+  // 本地保存
   const history = uni.getStorageSync('tarot_history') || []
   history.unshift({
     id: Date.now(),
@@ -208,6 +207,10 @@ const saveToHistory = () => {
   })
   if (history.length > 50) history.pop()
   uni.setStorageSync('tarot_history', history)
+  
+  // 后端保存
+  await saveToBackend()
+  
   uni.showToast({ title: '已保存', icon: 'success' })
 }
 
