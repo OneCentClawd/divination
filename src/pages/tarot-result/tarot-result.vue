@@ -453,4 +453,3 @@ onMounted(() => {
   border: 2rpx solid rgba(224, 195, 252, 0.3);
 }
 </style>
-</template>

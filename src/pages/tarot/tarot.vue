@@ -556,4 +556,3 @@ const resetReading = () => {
   margin-top: 8rpx;
 }
 </style>
-</template>
