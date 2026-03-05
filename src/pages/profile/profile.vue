@@ -73,7 +73,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 
 const isLoggedIn = ref(false)
 const userInfo = ref<any>({})
@@ -324,7 +325,7 @@ const tryAutoLocation = () => {
 }
 
 // 检查登录状态
-onMounted(async () => {
+onShow(async () => {
   const savedToken = uni.getStorageSync('divination_token')
   const savedUser = uni.getStorageSync('divination_user')
   
